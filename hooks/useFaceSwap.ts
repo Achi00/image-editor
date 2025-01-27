@@ -14,11 +14,13 @@ export const useFaceSwap = () => {
     mutationFn: async (input: FaceSwapInput) => {
       // create FormData
       const formData = new FormData();
+      console.log("user image: " + JSON.stringify(input.user_image));
       formData.append("user_image", input.user_image);
       formData.append("generated_image_url", input.generated_image_url);
 
       // face swap API
       const swapRes = await fetch(
+        // "http://127.0.0.1:5000/swap-face",
         "https://face-swap-api.wordcrafter.io/swap-face",
         {
           method: "POST",

@@ -1,6 +1,6 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Label } from "../ui/label";
 import {
   Drawer,
@@ -24,6 +24,13 @@ const GalleryToggle = () => {
   const [isGallerySelected, setIsGallerySelected] = useState(false);
   const selectedTargetId = useSelectedTargetId();
   const { setSelectedTargetFaceId } = useImageActions();
+
+  const handleSelect = useCallback(
+    (id: number) => {
+      setSelectedTargetFaceId(id);
+    },
+    [setSelectedTargetFaceId]
+  );
   return (
     <div className="flex items-center space-x-2">
       <Switch
@@ -53,9 +60,7 @@ const GalleryToggle = () => {
             <SelectImage
               images={galleryImages}
               selectedId={selectedTargetId}
-              onSelect={(id) => {
-                setSelectedTargetFaceId(id);
-              }}
+              onSelect={handleSelect}
             />
 
             <DrawerFooter>

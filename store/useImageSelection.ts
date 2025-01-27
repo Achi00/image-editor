@@ -9,6 +9,12 @@ type ImageSelectionStore = {
   };
 };
 
+type ImageState = {
+  imageUrl: string | null;
+  setImageUrl: (url: string) => void;
+  resetImage: () => void;
+};
+
 const useImageSelectionStore = create<ImageSelectionStore>((set) => ({
   selectedSourceId: null,
   selectedTargetId: null,
@@ -16,6 +22,12 @@ const useImageSelectionStore = create<ImageSelectionStore>((set) => ({
     setSelectedBackgroundSourceId: (id) => set({ selectedSourceId: id }),
     setSelectedTargetFaceId: (id) => set({ selectedTargetId: id }),
   },
+}));
+
+export const useImageStore = create<ImageState>((set) => ({
+  imageUrl: null,
+  setImageUrl: (url) => set({ imageUrl: url }),
+  resetImage: () => set({ imageUrl: null }),
 }));
 
 // Selectors
