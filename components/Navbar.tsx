@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 const navItems = [
-  { name: "Remove Background", href: "/remove-background" },
+  { name: "Remove Background", href: "/remove-bg" },
   { name: "Face Swap", href: "/face-swap" },
   { name: "Enhance Quality", href: "/enhance-quality" },
 ];
@@ -13,6 +13,7 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <nav className="bg-white shadow-md">
@@ -31,7 +32,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 className={`inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm text-gray-700 font-semibold hover:border-gray-900 hover:text-gray-700 ${
-                  pathname === item.href && "border-gray-600"
+                  pathname === item.href && "border-b-2 text-red-600"
                 }`}
               >
                 {item.name}
