@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const queryUrl = searchParams.get("query");
 
-  const filename = "face-swap.jpg" + Date.now().toString();
-
-  console.log("imageUrl " + queryUrl);
-  console.log("params " + params);
-  //   console.log("slug " + slug);
+  const filename = "imagineAI" + Date.now().toString();
 
   if (!queryUrl) {
     return NextResponse.json(
@@ -21,12 +14,14 @@ export async function GET(
   }
 
   try {
+    // get image
     const imageResponse = await fetch(queryUrl);
 
     if (!imageResponse.ok) {
       throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
     }
 
+    // return blob
     const blob = await imageResponse.blob();
     return new NextResponse(blob, {
       headers: {

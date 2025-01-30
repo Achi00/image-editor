@@ -14,7 +14,7 @@ export const downloadImage = async () => {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "face-swap.jpg");
+    link.setAttribute("download", `ImagineAI-${Date.now()}.jpg`);
     document.body.appendChild(link);
     link.click();
     link.parentNode?.removeChild(link);

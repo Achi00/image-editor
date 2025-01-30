@@ -18,11 +18,11 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { ImageIcon, Images, Loader2, Upload } from "lucide-react";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/hooks/use-toast";
+import { CircleAlert, ImageIcon, Images, Loader2, Upload } from "lucide-react";
 import DownloadButton from "../DownloadButton";
 import toast, { Toaster } from "react-hot-toast";
+import { useImageStore } from "@/store/useImageSelection";
+import { uploadImage } from "@/utils/UploadImg";
 
 const ImageUploader = () => {
   const [status, setStatus] = useState("");
@@ -33,13 +33,15 @@ const ImageUploader = () => {
   );
 
   const [timer, setTimer] = useState(0);
+  // pass image url to download api
+  const { setImageUrl } = useImageStore();
+  // pricess time tracking
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
+  // hold model
   const modelRef = useRef<AutoModel | null>(null);
   const processorRef = useRef<Processor | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  // const { toast } = useToast();
 
   const EXAMPLE_URL =
     "https://res.cloudinary.com/dle6xv667/image/upload/v1737909558/superman_mv6hmz.jpg";
@@ -88,9 +90,10 @@ const ImageUploader = () => {
   // create interval while image is analyzing to see if it took too long time
   useEffect(() => {
     if (status === "Analyzing...") {
+      // check on every 5 secs to avoid unnecessary re-rendering
       timerRef.current = setInterval(() => {
-        setTimer((prev) => prev + 1);
-      }, 1000);
+        setTimer((prev) => prev + 5);
+      }, 5000);
     } else {
       // Reset timer when not analyzing
       if (timerRef.current) {
@@ -108,13 +111,18 @@ const ImageUploader = () => {
     };
   }, [status]);
 
-  // trank how long image processing took
+  // trank how long image processing took, if it took more that 15 sec notify user
   useEffect(() => {
     let toastTimeout: NodeJS.Timeout;
 
-    if (status === "Analyzing..." && timer >= 15) {
+    if (status === "Analyzing..." && timer == 15) {
       toastTimeout = setTimeout(() => {
-        toast("Seems like image processing took more time than usual");
+        toast(
+          "Seems like image processing took more time than usual, refresh page and try again",
+          {
+            icon: <CircleAlert />,
+          }
+        );
       }, 0);
     }
 
@@ -124,6 +132,8 @@ const ImageUploader = () => {
       }
     };
   }, [status, timer]);
+
+  console.log("processedImageUrl " + processedImageUrl);
 
   //   handle file input
   const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -195,10 +205,21 @@ const ImageUploader = () => {
 
     // Add canvas to container, remove background image
     const processedUrl = canvas.toDataURL("image/png");
+    // to display processed image
     setProcessedImageUrl(processedUrl);
+    // for download processed image
+    // upload image to cloudinary server
+    try {
+      setStatus("Getting url ready...");
+      const cloudinaryUrl = await uploadImage(processedUrl);
+      console.log(cloudinaryUrl);
+      setImageUrl(cloudinaryUrl);
+    } catch (error) {
+      console.log(error);
+      setStatus("Done!");
+    }
     setStatus("Done!");
   }
-
   return (
     <div className="w-full px-10">
       <Toaster />
@@ -268,11 +289,12 @@ const ImageUploader = () => {
                   <span>No image uploaded</span>
                 </div>
               )}
-              {status === "Analyzing..." && (
+              {status !== "Done!" && status !== "Ready" && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                   <div className="text-white text-xl flex items-center gap-1 font-bold">
                     <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                    Analyzing...
+                    {/* Analyzing... */}
+                    {status}
                   </div>
                 </div>
               )}
@@ -284,7 +306,9 @@ const ImageUploader = () => {
           <CardHeader>
             <div className="flex justify-between">
               <CardTitle>Processed Image</CardTitle>
-              <DownloadButton />
+              <DownloadButton
+                isDisabled={processedImageUrl === null ? true : false}
+              />
             </div>
             <CardDescription>
               Your image with the background removed will appear here.
@@ -304,7 +328,7 @@ const ImageUploader = () => {
                   <span>
                     {processedImageUrl
                       ? "Click 'Remove Background' to see the result here"
-                      : "Upload an image and process it to see the result here"}
+                      : "Result will appear here"}
                   </span>
                 </div>
               )}

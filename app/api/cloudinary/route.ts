@@ -26,12 +26,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await cloudinary.uploader.upload(
-      `data:image/jpeg;base64,${image}`,
-      {
-        resource_type: "image",
-      }
-    );
+    const result = await cloudinary.uploader.upload(image, {
+      resource_type: "image",
+    });
 
     return Response.json({
       success: true,

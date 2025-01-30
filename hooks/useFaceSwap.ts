@@ -35,7 +35,9 @@ export const useFaceSwap = () => {
       const swapData: FaceSwapResponse = await swapRes.json();
 
       // upload image to cloudinary
-      const cloudinaryUrl = await uploadImage(swapData.result_image);
+      const cloudinaryUrl = await uploadImage(
+        `data:image/jpeg;base64,${swapData.result_image}`
+      );
 
       return cloudinaryUrl;
     },

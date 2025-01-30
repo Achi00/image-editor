@@ -3,16 +3,20 @@ import React, { memo } from "react";
 import { Button } from "./ui/button";
 import { Download as DownloadIcon } from "lucide-react";
 
-const DownloadButton = memo(() => {
+type DownloadButtonProps = {
+  isDisabled?: boolean;
+};
+
+const DownloadButton = memo(({ isDisabled }: DownloadButtonProps) => {
   // download face swap image
   const { isDownloadLoading, downloadError, handleDownload } =
     useImageDownload();
 
   return (
     <Button
-      disabled={isDownloadLoading}
+      disabled={isDownloadLoading || isDisabled}
       onClick={handleDownload}
-      className="flex gap-2 items-center"
+      className={`flex gap-2 items-center ${isDisabled && "bg-gray-400"}`}
     >
       <DownloadIcon />
       {isDownloadLoading ? "Downloading..." : "Download"}

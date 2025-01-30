@@ -208,6 +208,7 @@ const FaceSwapForm = () => {
           >
             {isPending ? (
               <>
+                {/* TODO: make changable text */}
                 <Loader2 className="animate-spin" />
                 Please wait
               </>
