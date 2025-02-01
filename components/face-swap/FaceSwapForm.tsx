@@ -17,16 +17,19 @@ import {
 import { galleryImages, imagesArr } from "@/lib/images";
 import { getImageById } from "@/utils/GetImageById";
 import ImageTabs from "./tabs/ImageTabs";
-import ReusableHoverCard from "../ReusableHoverCard";
 import ReusableAlert from "../ReusableAlert";
 import { getFileExtension } from "@/lib/getFileExtension";
 import DownloadButton from "../DownloadButton";
+import ResponsiveCard from "../ReusableHoverCard";
+import useLocalStorageStore from "@/store/useLocalStorage";
 const FaceSwapForm = () => {
   // store image url
   // TODO: remove url after
   const [image, setImage] = useState<string | null>();
   // performe face swap and upload image into cloudinary
   const { mutateAsync, isPending, error } = useFaceSwap();
+  // store image in local storage
+  const { addImage } = useLocalStorageStore();
 
   // from zustand store target(face) image id
   const selectedTargetId = useSelectedTargetId();
@@ -98,7 +101,12 @@ const FaceSwapForm = () => {
         generated_image_url: selectedBgImage,
       });
       setImage(resUrl);
-      console.log(resUrl);
+      // add finished image to local storage
+      addImage({
+        imageFrom: "face-swap",
+        date: Date.now(),
+        imgUrl: resUrl,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -128,7 +136,7 @@ const FaceSwapForm = () => {
           />
           {/* toggle gallery is open value */}
           <GalleryToggle />
-          <ReusableHoverCard
+          <ResponsiveCard
             contentClassName="w-80"
             trigger={
               <div className="flex items-center gap-2 pt-2 cursor-pointer hover:underline-offset-2">

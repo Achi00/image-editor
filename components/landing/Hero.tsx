@@ -1,0 +1,43 @@
+import Image from "next/image";
+import React from "react";
+import { Button } from "../ui/button";
+
+const Hero = () => {
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-b from-indigo-100 to-white dark:from-indigo-950 dark:to-background">
+      <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+              Transform Your Images with AI
+            </h1>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Unleash the power of AI to swap faces, remove backgrounds, and
+              enhance image quality in seconds.
+            </p>
+            <div className="mt-8 flex gap-4">
+              <Button size="lg">Get Started</Button>
+              <Button size="lg" variant="outline">
+                Learn More
+              </Button>
+            </div>
+          </div>
+          <div className="relative">
+            <Image
+              src="/placeholder.svg"
+              alt="AI Image Processing"
+              width={600}
+              height={400}
+              className="rounded-lg shadow-xl"
+            />
+            <div className="absolute -bottom-4 -left-4 h-72 w-72 animate-blob rounded-full bg-purple-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
+            <div className="absolute -top-4 -right-4 h-72 w-72 animate-blob animation-delay-2000 rounded-full bg-yellow-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
+            <div className="absolute -bottom-8 left-20 h-72 w-72 animate-blob animation-delay-4000 rounded-full bg-pink-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

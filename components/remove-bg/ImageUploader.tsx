@@ -8,7 +8,6 @@ import {
   Processor,
 } from "@xenova/transformers";
 import Image from "next/image";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
   Card,
@@ -18,28 +17,32 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { CircleAlert, ImageIcon, Images, Loader2, Upload } from "lucide-react";
+import { ImageIcon, Images, Loader2, Upload } from "lucide-react";
 import DownloadButton from "../DownloadButton";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useImageStore } from "@/store/useImageSelection";
 import { uploadImage } from "@/utils/UploadImg";
+import useTimer from "@/hooks/useTimer";
+import useLocalStorageStore from "@/store/useLocalStorage";
 
 const ImageUploader = () => {
+  // status of briaai/RMBG-1.4 model
   const [status, setStatus] = useState("");
+  // original image
   const [beforeImg, setBeforeImg] = useState("");
 
+  // finished image url
   const [processedImageUrl, setProcessedImageUrl] = useState<string | null>(
     null
   );
 
-  const [timer, setTimer] = useState(0);
   // pass image url to download api
   const { setImageUrl } = useImageStore();
-  // pricess time tracking
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // hold model
   const modelRef = useRef<AutoModel | null>(null);
   const processorRef = useRef<Processor | null>(null);
+  // add image to localSotage with zustand store
+  const { addImage } = useLocalStorageStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -87,53 +90,8 @@ const ImageUploader = () => {
     })();
   }, []);
 
-  // create interval while image is analyzing to see if it took too long time
-  useEffect(() => {
-    if (status === "Analyzing...") {
-      // check on every 5 secs to avoid unnecessary re-rendering
-      timerRef.current = setInterval(() => {
-        setTimer((prev) => prev + 5);
-      }, 5000);
-    } else {
-      // Reset timer when not analyzing
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-      setTimer(0);
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [status]);
-
-  // trank how long image processing took, if it took more that 15 sec notify user
-  useEffect(() => {
-    let toastTimeout: NodeJS.Timeout;
-
-    if (status === "Analyzing..." && timer == 15) {
-      toastTimeout = setTimeout(() => {
-        toast(
-          "Seems like image processing took more time than usual, refresh page and try again",
-          {
-            icon: <CircleAlert />,
-          }
-        );
-      }, 0);
-    }
-
-    return () => {
-      if (toastTimeout) {
-        clearTimeout(toastTimeout);
-      }
-    };
-  }, [status, timer]);
-
-  console.log("processedImageUrl " + processedImageUrl);
+  // track how long image processing took
+  useTimer({ status });
 
   //   handle file input
   const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -212,8 +170,13 @@ const ImageUploader = () => {
     try {
       setStatus("Getting url ready...");
       const cloudinaryUrl = await uploadImage(processedUrl);
-      console.log(cloudinaryUrl);
       setImageUrl(cloudinaryUrl);
+      // save image url to local storage
+      addImage({
+        imageFrom: "remove-bg",
+        date: Date.now(),
+        imgUrl: cloudinaryUrl,
+      });
     } catch (error) {
       console.log(error);
       setStatus("Done!");
@@ -307,7 +270,11 @@ const ImageUploader = () => {
             <div className="flex justify-between">
               <CardTitle>Processed Image</CardTitle>
               <DownloadButton
-                isDisabled={processedImageUrl === null ? true : false}
+                isDisabled={
+                  processedImageUrl === null
+                    ? true
+                    : false || status === "Getting url ready..."
+                }
               />
             </div>
             <CardDescription>
@@ -336,13 +303,13 @@ const ImageUploader = () => {
           </CardContent>
         </Card>
       </div>
-      <p>Status: {status}</p>
-      <div>{status === "loading model..." && <div>Loading...</div>}</div>
+      {/* <p>Status: {status}</p> */}
+      {/* <div>{status === "loading model..." && <div>Loading...</div>}</div> */}
 
       {/* Example button */}
 
       {/* File input */}
-      <div className="grid w-full max-w-sm items-center gap-1.5">
+      {/* <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="picture">Picture</Label>
         <Input
           id="picture"
@@ -350,7 +317,7 @@ const ImageUploader = () => {
           accept="image/*"
           onChange={onFileChange}
         />
-      </div>
+      </div> */}
       {/* <input type="file" accept="image/*" onChange={onFileChange} /> */}
 
       {/* Container that shows final results */}

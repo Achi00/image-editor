@@ -1,7 +1,9 @@
 import { ArrowLeftRight, Eraser } from "lucide-react";
 import React from "react";
-import LinkCards from "../components/LinkCards";
+import LinkCards from "../components/landing/LinkCards";
 import { LinkCardProps } from "@/types";
+import Hero from "@/components/landing/Hero";
+import { HowItWorks } from "@/components/landing/HowItWorks";
 
 const Links: LinkCardProps[] = [
   {
@@ -26,7 +28,9 @@ const Links: LinkCardProps[] = [
 
 const page = () => {
   return (
-    <div className="w-full min-h-screen flex items-center justify-center">
+    // <div className="w-full min-h-screen flex items-center justify-center">
+    <main className="flex-1">
+      <Hero />
       <div className="flex w-full items-center justify-center gap-10">
         {Links.map((link: LinkCardProps) => (
           <LinkCards
@@ -40,7 +44,9 @@ const page = () => {
           />
         ))}
       </div>
-    </div>
+      <HowItWorks />
+    </main>
+    // </div>
   );
 };
 

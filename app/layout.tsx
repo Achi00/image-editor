@@ -4,6 +4,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ThemeProvider } from "@/components/theme-provider";
+import YourImages from "@/components/YourImages";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +30,25 @@ export default function RootLayout({
 }>) {
   const queryClient = new QueryClient();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className={geistSans.variable}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryClientProvider client={queryClient}>
-          <Navbar />
-          <main className="pt-12">{children}</main>
-        </QueryClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider client={queryClient}>
+            <Navbar />
+            {children}
+            <div className="fixed bottom-0 right-0 p-5">
+              <YourImages />
+            </div>
+            <Footer />
+          </QueryClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
