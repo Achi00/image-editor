@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -21,12 +21,135 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const YourImages = () => {
+  // stete to check if the image added
+  const [showNotification, setShowNotification] = useState(false);
+  // get images from zustand selector for memoization
+  const images = useLocalStorageStore((state) => state.images);
+
+  // Ref to track previous images length
+  const prevImagesLength = useRef(images.length);
+  // Ref to skip the first render
+  const isFirstRender = useRef(true);
+  // FIX: still shows up onMount
+  // show message when new image is added
+  useEffect(() => {
+    const previousLength = prevImagesLength.current;
+    const currentLength = images.length;
+
+    // Skip effect on initial mount
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      prevImagesLength.current = currentLength;
+      return;
+    }
+
+    // Only show notification if:
+    // We have existing images and new ones are added, OR
+    // We're adding the first image to an empty array
+    if (
+      currentLength > previousLength &&
+      !(previousLength === 0 && isFirstRender.current)
+    ) {
+      setShowNotification(true);
+    }
+
+    // Update the previous length
+    prevImagesLength.current = currentLength;
+  }, [images]);
+
+  /* 
+    get filtered images by imageFrom property do display them in different 
+    sections of user images modal
+  */
+
+  //  useMemo to avoid unneccessary calculations on every re-render
+
+  /* images are refference type by in this case it is fine,
+     because we get zustand selector and not array itself
+  */
+  const removeBgImages = useMemo(
+    () => images.filter((image) => image.imageFrom === "remove-bg"),
+    [images]
+  );
+
+  const faceSwapImages = useMemo(
+    () => images.filter((image) => image.imageFrom === "face-swap"),
+    [images]
+  );
+
+  const enhanceImages = useMemo(
+    () => images.filter((image) => image.imageFrom === "enhance"),
+    [images]
+  );
+
+  return (
+    <>
+      {/* show notification if new image ha been added */}
+      {showNotification && <NewImagePopover />}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button className="w-44" variant="outline">
+            <Images /> View Your Images
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-[500px]"
+          side="top"
+          align="center"
+          sideOffset={5}
+        >
+          <div className="p-4 bg-muted">
+            <h4 className="font-medium">Recent Images</h4>
+          </div>
+          <Tabs className="w-full max-w-3xl mx-auto">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="remove-bg">Remove BG</TabsTrigger>
+              <TabsTrigger value="face-swap">Face Swap</TabsTrigger>
+              <TabsTrigger value="enhance">Enhance</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="remove-bg">
+              {removeBgImages.length > 0 ? (
+                <ImageSection
+                  images={removeBgImages}
+                  title="Background Removed"
+                />
+              ) : (
+                <NoContent sectionName="Remove Background" />
+              )}
+            </TabsContent>
+
+            <TabsContent value="face-swap">
+              {faceSwapImages.length > 0 ? (
+                <ImageSection images={faceSwapImages} title="Face Swapped" />
+              ) : (
+                <NoContent sectionName="Face Swap" />
+              )}
+            </TabsContent>
+
+            <TabsContent value="enhance">
+              {enhanceImages.length > 0 ? (
+                <ImageSection images={enhanceImages} title="Enhanced" />
+              ) : (
+                <NoContent sectionName="Enhance Image" />
+              )}
+            </TabsContent>
+          </Tabs>
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+};
+
+// display image components
 const ImageSection = ({
   title,
   images,
@@ -39,7 +162,7 @@ const ImageSection = ({
   return (
     <div className="mb-4">
       <h5 className="font-medium mb-2">{title}</h5>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 max-h-96 overflow-auto p-2">
         {images.map((image) => (
           <div key={image.imgUrl} className="space-y-4 border-2 p-2 rounded-lg">
             <div className="relative aspect-square">
@@ -74,79 +197,7 @@ const ImageSection = ({
   );
 };
 
-const YourImages = () => {
-  const { images } = useLocalStorageStore();
-
-  const removeBgImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "remove-bg"),
-    [images]
-  );
-
-  const faceSwapImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "face-swap"),
-    [images]
-  );
-
-  const enhanceImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "enhance"),
-    [images]
-  );
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">
-          <Images /> View Your Images
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-[500px]"
-        side="top"
-        align="center"
-        sideOffset={5}
-      >
-        <div className="p-4 bg-muted">
-          <h4 className="font-medium">Recent Images</h4>
-        </div>
-        <Tabs className="w-full max-w-3xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="remove-bg">Remove BG</TabsTrigger>
-            <TabsTrigger value="face-swap">Face Swap</TabsTrigger>
-            <TabsTrigger value="enhance">Enhance</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="remove-bg">
-            {removeBgImages.length > 0 ? (
-              <ImageSection
-                images={removeBgImages}
-                title="Background Removed"
-              />
-            ) : (
-              <NoContent sectionName="Remove Background" />
-            )}
-          </TabsContent>
-
-          <TabsContent value="face-swap">
-            {faceSwapImages.length > 0 ? (
-              <ImageSection images={faceSwapImages} title="Face Swapped" />
-            ) : (
-              <NoContent sectionName="Face Swap" />
-            )}
-          </TabsContent>
-
-          <TabsContent value="enhance">
-            {enhanceImages.length > 0 ? (
-              <ImageSection images={enhanceImages} title="Enhanced" />
-            ) : (
-              <NoContent sectionName="Enhance Image" />
-            )}
-          </TabsContent>
-        </Tabs>
-      </PopoverContent>
-    </Popover>
-  );
-};
-
+// if there are no images on any section
 const NoContent = ({ sectionName }: { sectionName: string }) => (
   <Card className="w-full max-w-md mx-auto">
     <CardHeader>
@@ -190,5 +241,34 @@ const NoContent = ({ sectionName }: { sectionName: string }) => (
     </CardContent>
   </Card>
 );
+
+// show popover whenever new image is saved in local storage
+const NewImagePopover = () => {
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpen(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!open) return null;
+
+  return (
+    <Card className="w-44 mb-5">
+      <div className="flex flex-col items-start bg-blue-50 text-blue-700 p-4 rounded-lg w-full">
+        <div className="flex items-center gap-1 py-2 pb-4">
+          <Info className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+          <p className="text-sm font-medium">New image added!</p>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Check it out in your gallery.
+        </p>
+      </div>
+    </Card>
+  );
+};
 
 export default YourImages;

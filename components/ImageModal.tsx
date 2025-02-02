@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import DownloadButton from "./DownloadButton";
 import { useImageStore } from "@/store/useImageSelection";
-import { X } from "lucide-react";
 
 const ImageModal = () => {
   const route = useRouter();

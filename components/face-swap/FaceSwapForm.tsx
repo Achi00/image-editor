@@ -51,6 +51,23 @@ const FaceSwapForm = () => {
     selectedBgImage = getImageById(selectedBackgroundSourceId, imagesArr);
   }
 
+  // Remove later
+  // testing popover on new face swap image
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     console.log("new face swap image added");
+  //     addImage({
+  //       imageFrom: "face-swap",
+  //       date: Date.now(),
+  //       imgUrl:
+  //         "https://res.cloudinary.com/dle6xv667/image/upload/v1738487295/onqmnchvqvzgtihgddyu.png",
+  //     });
+  //   }, 10000);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // }, [addImage]);
+
   // check if image state changes and pass to zustand store
   useEffect(() => {
     if (image) {
