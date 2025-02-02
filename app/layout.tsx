@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import YourImages from "@/components/YourImages";
+import ImageModal from "@/components/ImageModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const queryClient = new QueryClient();
+
   return (
     <html lang="en" suppressHydrationWarning className={geistSans.variable}>
       <body
@@ -42,6 +44,8 @@ export default function RootLayout({
         >
           <QueryClientProvider client={queryClient}>
             <Navbar />
+            <ImageModal />
+
             {children}
             <div className="fixed bottom-0 right-0 p-5">
               <YourImages />

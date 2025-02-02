@@ -8,7 +8,7 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import { Computer, Laptop, Server } from "lucide-react";
+import { Laptop, Server } from "lucide-react";
 import { Badge } from "../ui/badge";
 
 const LinkCards = ({

@@ -14,7 +14,6 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <nav className="bg-white shadow-md dark:bg-gray-900 dark:text-white">

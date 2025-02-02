@@ -24,6 +24,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const ImageSection = ({
   title,
@@ -32,20 +34,23 @@ const ImageSection = ({
   title: string;
   images: LocalStorageProps[];
 }) => {
+  const pathname = usePathname();
   const { removeImage } = useLocalStorageStore();
   return (
     <div className="mb-4">
       <h5 className="font-medium mb-2">{title}</h5>
       <div className="grid grid-cols-2 gap-2">
         {images.map((image) => (
-          <div key={image.imgUrl} className="space-y-1">
+          <div key={image.imgUrl} className="space-y-4 border-2 p-2 rounded-lg">
             <div className="relative aspect-square">
-              <Image
-                src={image.imgUrl || "/placeholder.svg"}
-                alt={`${image.imageFrom} image`}
-                fill
-                className="object-cover cursor-pointer rounded-md"
-              />
+              <Link href={`${pathname}/?modal=${image.imgUrl}`}>
+                <Image
+                  src={image.imgUrl || "/placeholder.svg"}
+                  alt={`${image.imageFrom} image`}
+                  fill
+                  className="object-cover cursor-pointer rounded-md"
+                />
+              </Link>
               <Button
                 className="cursor-pointer relative z-10 m-2"
                 variant="outline"
@@ -122,7 +127,7 @@ const YourImages = () => {
           </TabsContent>
 
           <TabsContent value="face-swap">
-            {removeBgImages.length > 0 ? (
+            {faceSwapImages.length > 0 ? (
               <ImageSection images={faceSwapImages} title="Face Swapped" />
             ) : (
               <NoContent sectionName="Face Swap" />
@@ -130,24 +135,13 @@ const YourImages = () => {
           </TabsContent>
 
           <TabsContent value="enhance">
-            {removeBgImages.length > 0 ? (
+            {enhanceImages.length > 0 ? (
               <ImageSection images={enhanceImages} title="Enhanced" />
             ) : (
               <NoContent sectionName="Enhance Image" />
             )}
           </TabsContent>
         </Tabs>
-        {/* <div className="p-4 max-h-[400px] overflow-y-auto">
-          {removeBgImages.length > 0 && (
-            <ImageSection title="Remove Background" images={removeBgImages} />
-          )}
-          {faceSwapImages.length > 0 && (
-            <ImageSection title="Face Swap" images={faceSwapImages} />
-          )}
-          {enhanceImages.length > 0 && (
-            <ImageSection title="Enhance" images={enhanceImages} />
-          )}
-        </div> */}
       </PopoverContent>
     </Popover>
   );
@@ -172,15 +166,25 @@ const NoContent = ({ sectionName }: { sectionName: string }) => (
             section
           </p>
           <p className="text-sm text-gray-500">
-            Upload some images to get started with processing
+            You can do {sectionName} process by navigating to{" "}
+            <Link
+              className="text-blue-800 underline font-semibold"
+              href={
+                sectionName === "Face Swap"
+                  ? "face-swap"
+                  : sectionName === "Remove Background"
+                  ? "remove-bg"
+                  : "enhance"
+              }
+            >
+              {sectionName} page
+            </Link>{" "}
+            and start processing the image
           </p>
         </div>
         <div className="flex items-start bg-blue-50 text-blue-700 p-4 rounded-lg mt-4 w-full">
           <Info className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-          <p className="text-sm">
-            To add images, use the upload button or drag and drop files into
-            this section.
-          </p>
+          <p className="text-sm">Your processed images will appare here</p>
         </div>
       </div>
     </CardContent>
