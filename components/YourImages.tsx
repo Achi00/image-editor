@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -7,6 +7,7 @@ import {
 import { Button } from "./ui/button";
 import {
   Calendar,
+  CircleX,
   FolderOpen,
   ImageIcon,
   Images,
@@ -21,49 +22,36 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const YourImages = () => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // stete to check if the image added
   const [showNotification, setShowNotification] = useState(false);
   // get images from zustand selector for memoization
   const images = useLocalStorageStore((state) => state.images);
 
-  // Ref to track previous images length
-  const prevImagesLength = useRef(images.length);
-  // Ref to skip the first render
-  const isFirstRender = useRef(true);
   // FIX: still shows up onMount
   // show message when new image is added
   useEffect(() => {
-    const previousLength = prevImagesLength.current;
-    const currentLength = images.length;
-
-    // Skip effect on initial mount
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      prevImagesLength.current = currentLength;
-      return;
-    }
-
-    // Only show notification if:
-    // We have existing images and new ones are added, OR
-    // We're adding the first image to an empty array
-    if (
-      currentLength > previousLength &&
-      !(previousLength === 0 && isFirstRender.current)
-    ) {
-      setShowNotification(true);
-    }
-
-    // Update the previous length
-    prevImagesLength.current = currentLength;
+    setShowNotification((prev) => (!prev ? true : false));
   }, [images]);
+
+  // check if image modal is open and close popover
+  // get image url from modal url
+  const searchParams = useSearchParams();
+  const modalUrl = searchParams.get("modal");
+  console.log(modalUrl);
+  useEffect(() => {
+    // close popover
+    if (modalUrl !== null) {
+      setIsPopoverOpen(false);
+    }
+  }, [modalUrl]);
 
   /* 
     get filtered images by imageFrom property do display them in different 
@@ -72,8 +60,9 @@ const YourImages = () => {
 
   //  useMemo to avoid unneccessary calculations on every re-render
 
-  /* images are refference type by in this case it is fine,
-     because we get zustand selector and not array itself
+  /* 
+    images are refference type but in this case it is fine,
+    because we get zustand selector and not array itself
   */
   const removeBgImages = useMemo(
     () => images.filter((image) => image.imageFrom === "remove-bg"),
@@ -94,14 +83,22 @@ const YourImages = () => {
     <>
       {/* show notification if new image ha been added */}
       {showNotification && <NewImagePopover />}
-      <Popover>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <Button className="w-44" variant="outline">
-            <Images /> View Your Images
+            {isPopoverOpen ? (
+              <>
+                <CircleX /> Close Gallery
+              </>
+            ) : (
+              <>
+                <Images /> Open Your Gallery
+              </>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[500px]"
+          className="w-[100vw] sm:w-[500px]"
           side="top"
           align="center"
           sideOffset={5}
@@ -110,7 +107,7 @@ const YourImages = () => {
             <h4 className="font-medium">Recent Images</h4>
           </div>
           <Tabs className="w-full max-w-3xl mx-auto">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="flex items-center justify-center flex-col xl:flex-row lg:flex-row sm:flex-row mt-10 gap-2 p-1 mb-20">
               <TabsTrigger value="remove-bg">Remove BG</TabsTrigger>
               <TabsTrigger value="face-swap">Face Swap</TabsTrigger>
               <TabsTrigger value="enhance">Enhance</TabsTrigger>
@@ -162,16 +159,19 @@ const ImageSection = ({
   return (
     <div className="mb-4">
       <h5 className="font-medium mb-2">{title}</h5>
-      <div className="grid grid-cols-2 gap-2 max-h-96 overflow-auto p-2">
+      <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2">
         {images.map((image) => (
-          <div key={image.imgUrl} className="space-y-4 border-2 p-2 rounded-lg">
-            <div className="relative aspect-square">
+          <div
+            key={image.imgUrl}
+            className="space-y-4 border-2 p-2 rounded-lg max-w-[80vw] md:max-w-full sm:max-w-full"
+          >
+            <div className="relative aspect-square ">
               <Link href={`${pathname}/?modal=${image.imgUrl}`}>
                 <Image
                   src={image.imgUrl || "/placeholder.svg"}
                   alt={`${image.imageFrom} image`}
                   fill
-                  className="object-cover cursor-pointer rounded-md"
+                  className="object-cover cursor-pointer rounded-md hover:scale-[1.02]  transition-transform"
                 />
               </Link>
               <Button

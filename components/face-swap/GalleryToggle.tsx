@@ -48,7 +48,7 @@ const GalleryToggle = () => {
         onOpenChange={(open) => setIsGallerySelected(open)}
       >
         <DrawerContent>
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col max-h-[90vh] items-center overflow-auto">
             <DrawerHeader>
               <DrawerTitle>Select Target Face</DrawerTitle>
               <DrawerDescription>

@@ -40,7 +40,6 @@ const ResponsiveCard = ({
   contentClassName = "w-80",
 }: ReusableHoverCardProps) => {
   const deviceWidth = useWindowDimensions();
-  console.log(deviceWidth.width);
   const isMobile = deviceWidth.width < 768;
 
   return isMobile ? (

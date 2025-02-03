@@ -21,8 +21,12 @@ const ImageModal = () => {
       const hostName = new URL(modalUrl);
       if (hostName.hostname === "res.cloudinary.com") {
         setImageUrl(modalUrl);
+        document.body.style.overflow = "hidden";
       }
     }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [modalUrl, setImageUrl]);
 
   // close modal and return to page where from image was open
