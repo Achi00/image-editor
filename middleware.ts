@@ -3,14 +3,14 @@ import { NextResponse } from "next/server";
 
 const authRoutes = ["/login", "/register"];
 const publicRoutes = ["/", "/remove-bg", "/face-swap", "/enhance-quality"];
-const apiAuthPrefix = "/api/auth";
+const apiAuthPrefix = "/api";
 const DEFAULT_LOGIN_REDIRECT = "/";
 
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  // Allow API auth routes
+  // Allow API routes
   if (nextUrl.pathname.startsWith(apiAuthPrefix)) {
     return NextResponse.next();
   }

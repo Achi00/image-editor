@@ -45,7 +45,7 @@ const YourImages = () => {
   // get image url from modal url
   const searchParams = useSearchParams();
   const modalUrl = searchParams.get("modal");
-  console.log(modalUrl);
+
   useEffect(() => {
     // close popover
     if (modalUrl !== null) {

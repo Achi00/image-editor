@@ -6,7 +6,6 @@ const main = async () => {
     await migrate(db, {
       migrationsFolder: "db/migrations",
     });
-    console.log("Migration successful");
   } catch (error: unknown) {
     {
       console.error("Migration failed", error);

@@ -87,7 +87,6 @@ const FaceSwapForm = () => {
   const hasUserImage = Boolean(userImage?.[0]);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log("Raw form data:", data);
     try {
       // Handle both cases: uploaded file OR gallery image
       let userImageFile: File;

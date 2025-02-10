@@ -21,6 +21,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import GoogleButton from "./GoogleButton";
 
 const navItems = [
   { name: "Remove Background", href: "/remove-bg" },
@@ -117,9 +118,7 @@ export default function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={() => signIn("google")}>
-                Sign in with Google
-              </Button>
+              <GoogleButton />
             )}
           </div>
 

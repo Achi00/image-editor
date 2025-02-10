@@ -10,6 +10,17 @@ import {
 import SelectImage from "../SelectImage";
 import { galleryImages, imagesArr } from "@/lib/images";
 import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { AlertTriangle } from "lucide-react";
+import GoogleButton from "@/components/GoogleButton";
 
 // for source image
 export default function ImageTabs() {
@@ -34,12 +45,33 @@ export default function ImageTabs() {
         {session?.user.id ? (
           <GenerateTab />
         ) : (
-          <div className="w-full max-h-80 bg-gray-400">
-            <p>
-              To generate image with <span>Stable Diffusion</span> you need to
-              be logged in
-            </p>
-          </div>
+          <Card className="w-full max-w-3xl mx-auto mt-8">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <AlertTriangle className="h-6 w-6 text-yellow-500" />
+                Authentication Required
+              </CardTitle>
+              <CardDescription>
+                To access Stable Diffusion image generation, please log in or
+                create an account.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <p className="text-lg font-semibold">
+                Stable Diffusion is a powerful AI image generation tool that
+                allows you to create images from text descriptions. This feature
+                is exclusively available to authenticated users.
+              </p>
+              <div className="w-full border-t-2 border-gray-700"></div>
+              <p className="p-2 text-gray-600">
+                After authentication you will be albe to generate image and use
+                that image to place selected face into it
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-end space-x-4">
+              <GoogleButton />
+            </CardFooter>
+          </Card>
         )}
       </TabsContent>
       <TabsContent value="select">
