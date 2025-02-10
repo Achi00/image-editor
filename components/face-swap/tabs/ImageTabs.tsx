@@ -9,9 +9,11 @@ import {
 } from "@/store/useImageSelection";
 import SelectImage from "../SelectImage";
 import { galleryImages, imagesArr } from "@/lib/images";
+import { useSession } from "next-auth/react";
 
 // for source image
 export default function ImageTabs() {
+  const { data: session } = useSession();
   const { setSelectedBackgroundSourceId } = useImageActions();
   const selectedSourceId = useSelectedSourceId();
   const [, setActiveTab] = useState("select");
@@ -29,7 +31,16 @@ export default function ImageTabs() {
         <TabsTrigger value="select">Select Image</TabsTrigger>
       </TabsList>
       <TabsContent value="generate">
-        <GenerateTab />
+        {session?.user.id ? (
+          <GenerateTab />
+        ) : (
+          <div className="w-full max-h-80 bg-gray-400">
+            <p>
+              To generate image with <span>Stable Diffusion</span> you need to
+              be logged in
+            </p>
+          </div>
+        )}
       </TabsContent>
       <TabsContent value="select">
         <SelectImage

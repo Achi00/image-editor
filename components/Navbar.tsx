@@ -1,10 +1,27 @@
 "use client";
-
+import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, ImageIcon, LogOut, Menu, User, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { Button } from "./ui/button";
+import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const navItems = [
   { name: "Remove Background", href: "/remove-bg" },
   { name: "Face Swap", href: "/face-swap" },
@@ -14,6 +31,7 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-white shadow-md dark:bg-gray-900 dark:text-white">
@@ -42,6 +60,67 @@ export default function Navbar() {
               </Link>
             ))}
             <ThemeToggle />
+            {session?.user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-12 justify-start space-x-2 px-4"
+                  >
+                    <Image
+                      className="rounded-full"
+                      width={32}
+                      height={32}
+                      src={session?.user?.image || "/placeholder.svg"}
+                      alt="User avatar"
+                    />
+                    <span className="flex-1 text-left text-sm font-medium">
+                      {session?.user?.name}
+                    </span>
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {session?.user?.name}
+                      </p>
+                      {session?.user?.email && (
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {session?.user?.email}
+                        </p>
+                      )}
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/gallery" className="flex items-center">
+                      <ImageIcon className="mr-2 h-4 w-4" />
+                      <span>Open Gallery</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-red-600 focus:text-red-600"
+                    onSelect={() => signOut()}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button onClick={() => signIn("google")}>
+                Sign in with Google
+              </Button>
+            )}
           </div>
 
           <div className="-mr-2 flex items-center sm:hidden">

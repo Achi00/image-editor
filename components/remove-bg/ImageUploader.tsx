@@ -46,6 +46,13 @@ const ImageUploader = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // open image input field on button click
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const EXAMPLE_URL =
     "https://res.cloudinary.com/dle6xv667/image/upload/v1737909558/superman_mv6hmz.jpg";
 
@@ -204,15 +211,17 @@ const ImageUploader = () => {
             <Images />
             Use Example Image
           </Button>
-          <div className="flex pt-4 items-center space-x-4">
+          <div className="flex flex-col gap-4 md:flex-row pt-4 items-start md:items-center ">
             <Input
+              ref={fileInputRef}
               className="cursor-pointer"
               id="picture"
               type="file"
               accept="image/*"
               onChange={onFileChange}
             />
-            <Button>
+            {/* open input above by clicking */}
+            <Button onClick={handleButtonClick}>
               {status === "Analyzing..." ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -221,7 +230,7 @@ const ImageUploader = () => {
               ) : (
                 <>
                   <Upload className="mr-2 h-4 w-4" />
-                  Remove Background
+                  Upload image
                 </>
               )}
             </Button>
@@ -232,7 +241,9 @@ const ImageUploader = () => {
       <div className="grid md:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <CardTitle>Original Image</CardTitle>
+            <CardTitle className="text-md sm:text-2xl">
+              Original Image
+            </CardTitle>
             <CardDescription>
               Your uploaded image will appear here.
             </CardDescription>
@@ -267,8 +278,10 @@ const ImageUploader = () => {
 
         <Card>
           <CardHeader>
-            <div className="flex justify-between">
-              <CardTitle>Processed Image</CardTitle>
+            <div className="flex justify-between gap-2">
+              <CardTitle className="text-md sm:text-2xl">
+                Processed Image
+              </CardTitle>
               <DownloadButton
                 isDisabled={
                   processedImageUrl === null

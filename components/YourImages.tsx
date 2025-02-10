@@ -81,7 +81,7 @@ const YourImages = () => {
 
   return (
     <>
-      {/* show notification if new image ha been added */}
+      {/* show notification if new image have been added */}
       {showNotification && <NewImagePopover />}
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>

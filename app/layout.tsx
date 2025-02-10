@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import YourImages from "@/components/YourImages";
 import ImageModal from "@/components/ImageModal";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,23 +37,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <QueryClientProvider client={queryClient}>
-            <Navbar />
-            <ImageModal />
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <QueryClientProvider client={queryClient}>
+              <Navbar />
+              <ImageModal />
 
-            {children}
-            <div className="fixed bottom-0 right-0 p-5">
-              <YourImages />
-            </div>
-            <Footer />
-          </QueryClientProvider>
-        </ThemeProvider>
+              {children}
+              <div className="fixed bottom-0 right-0 p-5">
+                <YourImages />
+              </div>
+              <Footer />
+            </QueryClientProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
