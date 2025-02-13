@@ -1,5 +1,5 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,15 +10,9 @@ import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import GoogleButton from "./GoogleButton";
@@ -96,23 +90,29 @@ export default function Navbar() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/gallery" className="flex items-center">
+                    <Link
+                      href="/gallery"
+                      className="flex items-center cursor-pointer"
+                    >
                       <ImageIcon className="mr-2 h-4 w-4" />
                       <span>Open Gallery</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/profile" className="flex items-center">
+                    <Link
+                      href="/profile"
+                      className="flex items-center cursor-pointer"
+                    >
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-red-600 focus:text-red-600"
+                    className="text-red-600 focus:text-red-800  cursor-pointer"
                     onSelect={() => signOut()}
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <LogOut className="mr-2 h-6 w-6" />
                     <span>Sign out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

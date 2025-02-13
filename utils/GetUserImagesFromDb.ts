@@ -1,18 +1,26 @@
 import { cookies } from "next/headers";
 
-export const getUserImages = async () => {
+export const GetUserImagesFromDb = async (paramValue: {
+  [key: string]: string | string[] | undefined;
+}) => {
   const cookieStore = await cookies();
-  // Build a cookie header string by concatenating all cookies.
+  // get user cookies from browser
   const cookieHeader = cookieStore
     .getAll()
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
 
-  const response = await fetch("http://localhost:3000/api/images", {
-    headers: {
-      cookie: cookieHeader,
-    },
-  });
+  // pass param value for filtering
+  const filter = paramValue.filter;
+
+  const response = await fetch(
+    `http://localhost:3000/api/images?filter=${filter}`,
+    {
+      headers: {
+        cookie: cookieHeader,
+      },
+    }
+  );
 
   if (!response.ok) {
     // Optionally handle error responses here.

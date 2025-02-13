@@ -5,7 +5,7 @@ import { FormFields } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { Images, Info, Loader2, X } from "lucide-react";
+import { CircleAlert, CircleX, Images, Info, Loader2, X } from "lucide-react";
 import { useFaceSwap } from "@/hooks/useFaceSwap";
 import GalleryToggle from "./GalleryToggle";
 import {
@@ -21,15 +21,19 @@ import ReusableAlert from "../ReusableAlert";
 import { getFileExtension } from "@/lib/getFileExtension";
 import DownloadButton from "../DownloadButton";
 import ResponsiveCard from "../ReusableHoverCard";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import { useErrorStore } from "@/store/useErrorStore";
+import { useSaveImage } from "@/hooks/useSaveImage";
 const FaceSwapForm = () => {
   // store image url
-  // TODO: remove url after
   const [image, setImage] = useState<string | null>();
   // performe face swap and upload image into cloudinary
-  const { mutateAsync, isPending, error } = useFaceSwap();
-  // store image in local storage
-  const { addImage } = useLocalStorageStore();
+  const { mutateAsync, isPending } = useFaceSwap();
+  // save image url, function will decide where to save image url, local storage or database
+  const { saveImageData } = useSaveImage();
+
+  // zustand store error
+  const error = useErrorStore((state) => state.error);
+  const clearError = useErrorStore((state) => state.clearError);
 
   // from zustand store target(face) image id
   const selectedTargetId = useSelectedTargetId();
@@ -39,6 +43,13 @@ const FaceSwapForm = () => {
 
   // pass image url to download api
   const { setImageUrl } = useImageStore();
+
+  // Clear errors on unmount
+  useEffect(() => {
+    return () => {
+      clearError();
+    };
+  }, [clearError]);
 
   // return selected face image if selected image id != null
   let selectedFaceImage: string = "";
@@ -50,23 +61,6 @@ const FaceSwapForm = () => {
   if (selectedBackgroundSourceId) {
     selectedBgImage = getImageById(selectedBackgroundSourceId, imagesArr);
   }
-
-  // Remove later
-  // testing popover on new face swap image
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     console.log("new face swap image added");
-  //     addImage({
-  //       imageFrom: "face-swap",
-  //       date: Date.now(),
-  //       imgUrl:
-  //         "https://res.cloudinary.com/dle6xv667/image/upload/v1738487295/onqmnchvqvzgtihgddyu.png",
-  //     });
-  //   }, 10000);
-  //   return () => {
-  //     clearTimeout(timeout);
-  //   };
-  // }, [addImage]);
 
   // check if image state changes and pass to zustand store
   useEffect(() => {
@@ -87,6 +81,8 @@ const FaceSwapForm = () => {
   const hasUserImage = Boolean(userImage?.[0]);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    // clear error
+    clearError();
     try {
       // Handle both cases: uploaded file OR gallery image
       let userImageFile: File;
@@ -110,6 +106,8 @@ const FaceSwapForm = () => {
         );
       }
 
+      console.log("userImageFile", userImageFile);
+
       const resUrl = await mutateAsync({
         // users image
         user_image: userImageFile,
@@ -117,12 +115,8 @@ const FaceSwapForm = () => {
         generated_image_url: selectedBgImage,
       });
       setImage(resUrl);
-      // add finished image to local storage
-      addImage({
-        imageFrom: "face-swap",
-        date: Date.now(),
-        imgUrl: resUrl,
-      });
+
+      saveImageData(resUrl, "face-swap");
     } catch (error) {
       console.error(error);
     }
@@ -134,8 +128,30 @@ const FaceSwapForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-md mx-auto mt-10 space-y-6"
       >
-        {error && <div>{error.message}</div>}
+        {error && (
+          <ReusableAlert
+            className="my-4 text-red-600 border-red-500"
+            icon={<CircleX className="h-5 w-5" />}
+            title="There was problem processing your image"
+            content={error}
+          />
+        )}
+        <div className="w-80"></div>
         <div className="flex flex-col gap-4">
+          <ReusableAlert
+            className="my-4 border-yellow-500"
+            icon={<CircleAlert className="h-5 w-5 text-yellow-500" />}
+            title="Keep In Mind!"
+            content={
+              <>
+                Usually first request takes longes, about{" "}
+                <span className="font-bold">1 Minute</span>
+                <br />
+                after that requests take about{" "}
+                <span className="font-bold">30 seconds</span>
+              </>
+            }
+          />
           <ReusableAlert
             className="my-4"
             icon={<Images className="h-5 w-5" />}

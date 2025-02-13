@@ -25,12 +25,11 @@ export default auth((req) => {
 
   // Handle protected routes
   if (!isLoggedIn && !publicRoutes.includes(nextUrl.pathname)) {
-    let callbackUrl = nextUrl.pathname;
-    if (nextUrl.search) callbackUrl += nextUrl.search;
+    // let callbackUrl = nextUrl.pathname;
+    // if (nextUrl.search) callbackUrl += nextUrl.search;
 
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
     return NextResponse.redirect(
-      new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+      new URL(`/?callbackUrl=notAuthenticated`, nextUrl)
     );
   }
 

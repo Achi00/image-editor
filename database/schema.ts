@@ -26,8 +26,9 @@ export const userImages = pgTable("user_images", {
   userId: text("userId")
     .notNull()
     .references(() => users.id),
-  imageUrl: varchar({ length: 255 }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
+  imgUrl: varchar({ length: 255 }).notNull(),
+  imageFrom: varchar({ length: 255 }).notNull(),
+  date: timestamp().notNull().defaultNow(),
 });
 
 export const accounts = pgTable(

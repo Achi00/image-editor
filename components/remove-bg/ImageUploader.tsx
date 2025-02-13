@@ -21,9 +21,9 @@ import { ImageIcon, Images, Loader2, Upload } from "lucide-react";
 import DownloadButton from "../DownloadButton";
 import { Toaster } from "react-hot-toast";
 import { useImageStore } from "@/store/useImageSelection";
-import { uploadImage } from "@/utils/UploadImg";
+import { UploadImgCloudinary } from "@/utils/UploadImgCloudinary";
 import useTimer from "@/hooks/useTimer";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import { useSaveImage } from "@/hooks/useSaveImage";
 
 const ImageUploader = () => {
   // status of briaai/RMBG-1.4 model
@@ -36,13 +36,14 @@ const ImageUploader = () => {
     null
   );
 
+  // save image url
+  const { saveImageData } = useSaveImage();
+
   // pass image url to download api
   const { setImageUrl } = useImageStore();
   // hold model
   const modelRef = useRef<AutoModel | null>(null);
   const processorRef = useRef<Processor | null>(null);
-  // add image to localSotage with zustand store
-  const { addImage } = useLocalStorageStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -176,14 +177,12 @@ const ImageUploader = () => {
     // upload image to cloudinary server
     try {
       setStatus("Getting url ready...");
-      const cloudinaryUrl = await uploadImage(processedUrl);
+      const cloudinaryUrl = await UploadImgCloudinary(processedUrl);
       setImageUrl(cloudinaryUrl);
-      // save image url to local storage
-      addImage({
-        imageFrom: "remove-bg",
-        date: Date.now(),
-        imgUrl: cloudinaryUrl,
-      });
+      // save image url in local storage or database based on user authentication
+      console.log("saving image url...");
+      // pass image url to save image hook, it will decide where to save it, in local storage or database
+      saveImageData(cloudinaryUrl, "remove-bg");
     } catch (error) {
       console.log(error);
       setStatus("Done!");

@@ -1,5 +1,5 @@
 // upload image to cloudinary
-export const uploadImage = async (base64Image: string) => {
+export const UploadImgCloudinary = async (base64Image: string) => {
   try {
     const response = await fetch("/api/cloudinary", {
       method: "POST",

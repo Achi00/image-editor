@@ -1,6 +1,7 @@
-import { FaceSwapResponse, FormFields } from "@/types";
-import { uploadImage } from "@/utils/UploadImg";
+import { FaceSwapResponse } from "@/types";
+import { UploadImgCloudinary } from "@/utils/UploadImgCloudinary";
 import { useMutation } from "@tanstack/react-query";
+import { useErrorStore } from "@/store/useErrorStore";
 
 // user image only recives single image and not array of data like FormFields prop
 type FaceSwapInput = {
@@ -10,6 +11,7 @@ type FaceSwapInput = {
 
 // face swap and upload
 export const useFaceSwap = () => {
+  const setError = useErrorStore((state) => state.setError);
   return useMutation({
     mutationFn: async (input: FaceSwapInput) => {
       // create FormData
@@ -28,13 +30,16 @@ export const useFaceSwap = () => {
       );
 
       if (!swapRes.ok) {
-        throw new Error(`Face swap failed: ${swapRes}`);
+        setError("Something went wrong, Try another image");
+        console.error("Face swap failed:", JSON.stringify(swapRes));
+        return;
+        // throw new Error(`Face swap failed: ${swapRes}`);
       }
 
       const swapData: FaceSwapResponse = await swapRes.json();
 
       // upload image to cloudinary
-      const cloudinaryUrl = await uploadImage(
+      const cloudinaryUrl = await UploadImgCloudinary(
         `data:image/jpeg;base64,${swapData.result_image}`
       );
 

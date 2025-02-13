@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Popover,
@@ -27,8 +28,11 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useLocalStorageImages } from "@/hooks/useLocalStorageImages";
+import { GetUserImagesFromDb } from "@/utils/GetUserImagesFromDb";
 
 const YourImages = () => {
+  // const session = await auth();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // stete to check if the image added
   const [showNotification, setShowNotification] = useState(false);
@@ -64,21 +68,27 @@ const YourImages = () => {
     images are refference type but in this case it is fine,
     because we get zustand selector and not array itself
   */
-  const removeBgImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "remove-bg"),
-    [images]
-  );
+  //  TODO: if user is authenticated, show the images from db else show from local storage
+  // const removeBgImages = useMemo(
+  //   () => images.filter((image) => image.imageFrom === "remove-bg"),
+  //   [images]
+  // );
 
-  const faceSwapImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "face-swap"),
-    [images]
-  );
+  // const faceSwapImages = useMemo(
+  //   () => images.filter((image) => image.imageFrom === "face-swap"),
+  //   [images]
+  // );
 
-  const enhanceImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "enhance"),
-    [images]
-  );
-
+  // const enhanceImages = useMemo(
+  //   () => images.filter((image) => image.imageFrom === "enhance"),
+  //   [images]
+  // );
+  // if user is authenticated get images from db otherwise get from local storage
+  // get images from local storage
+  const { removeBgImages, faceSwapImages, enhanceImages } =
+    useLocalStorageImages();
+  // get images from database
+  // const userImages = await GetUserImagesFromDb();
   return (
     <>
       {/* show notification if new image have been added */}
@@ -116,6 +126,7 @@ const YourImages = () => {
             <TabsContent value="remove-bg">
               {removeBgImages.length > 0 ? (
                 <ImageSection
+                  className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2"
                   images={removeBgImages}
                   title="Background Removed"
                 />
@@ -126,7 +137,11 @@ const YourImages = () => {
 
             <TabsContent value="face-swap">
               {faceSwapImages.length > 0 ? (
-                <ImageSection images={faceSwapImages} title="Face Swapped" />
+                <ImageSection
+                  className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2"
+                  images={faceSwapImages}
+                  title="Face Swapped"
+                />
               ) : (
                 <NoContent sectionName="Face Swap" />
               )}
@@ -134,7 +149,11 @@ const YourImages = () => {
 
             <TabsContent value="enhance">
               {enhanceImages.length > 0 ? (
-                <ImageSection images={enhanceImages} title="Enhanced" />
+                <ImageSection
+                  className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2"
+                  images={enhanceImages}
+                  title="Enhanced"
+                />
               ) : (
                 <NoContent sectionName="Enhance Image" />
               )}
@@ -147,19 +166,21 @@ const YourImages = () => {
 };
 
 // display image components
-const ImageSection = ({
+export const ImageSection = ({
   title,
   images,
+  className,
 }: {
   title: string;
   images: LocalStorageProps[];
+  className: string;
 }) => {
   const pathname = usePathname();
   const { removeImage } = useLocalStorageStore();
   return (
     <div className="mb-4">
       <h5 className="font-medium mb-2">{title}</h5>
-      <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2">
+      <div className={className}>
         {images.map((image) => (
           <div
             key={image.imgUrl}
@@ -198,7 +219,7 @@ const ImageSection = ({
 };
 
 // if there are no images on any section
-const NoContent = ({ sectionName }: { sectionName: string }) => (
+export const NoContent = ({ sectionName }: { sectionName: string }) => (
   <Card className="w-full max-w-md mx-auto">
     <CardHeader>
       <CardTitle className="flex items-center text-xl font-semibold text-gray-700">
