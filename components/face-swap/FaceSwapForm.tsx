@@ -205,6 +205,7 @@ const FaceSwapForm = () => {
             // show selected image
             <div className="relative w-[250px] h-[250px] flex flex-col gap-3">
               <Image
+                quality={70}
                 className="rounded-xl border-4 border-blue-500"
                 src={selectedFaceImage}
                 alt="selected img"
@@ -263,6 +264,7 @@ const FaceSwapForm = () => {
         <div className="flex flex-col gap-5 text-center py-4">
           <h1 className="font-bold text-3xl">Final Result</h1>
           <Image
+            quality={80}
             className="rounded-3xl"
             src={image}
             alt="final result"

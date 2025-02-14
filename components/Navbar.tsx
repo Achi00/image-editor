@@ -63,6 +63,7 @@ export default function Navbar() {
                     className="relative h-12 justify-start space-x-2 px-4"
                   >
                     <Image
+                      quality={60}
                       className="rounded-full"
                       width={32}
                       height={32}
@@ -91,7 +92,7 @@ export default function Navbar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link
-                      href="/gallery"
+                      href="/gallery?filter=face-swap"
                       className="flex items-center cursor-pointer"
                     >
                       <ImageIcon className="mr-2 h-4 w-4" />

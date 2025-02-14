@@ -14,17 +14,12 @@ export async function GET(request: Request) {
     }
     const { searchParams } = new URL(request.url);
     const filters = searchParams.get("filter")?.split(",") || [];
-    console.log("filter param: " + filters);
 
     // Validate allowed filters
     const validFilters = ["remove-bg", "face-swap", "enhance"];
     const sanitizedFilters = filters.filter((f) => validFilters.includes(f));
 
     const userId = session.user.id;
-    // const images = await db
-    //   .select()
-    //   .from(userImages)
-    //   .where(eq(userImages.userId, session.user.id));
 
     const cachedData = await unstable_cache(
       async () => {

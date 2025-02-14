@@ -1,3 +1,8 @@
+import { db } from "@/database";
+import { userImages } from "@/database/schema";
+import { auth } from "@/lib/auth";
+import { and, eq, inArray, desc } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
 
 export const GetUserImagesFromDb = async (paramValue: {
@@ -33,3 +38,19 @@ export const GetUserImagesFromDb = async (paramValue: {
 
   return images;
 };
+
+export const getAllUserImages = unstable_cache(
+  async (session) => {
+    return db
+      .select()
+      .from(userImages)
+      .where(eq(userImages.userId, session.user.id))
+      .orderBy(desc(userImages.date))
+      .limit(50);
+  },
+  ["user-images"], // Single cache key
+  {
+    tags: [`images-${userImages.userId}`], // User-specific tag
+    revalidate: 3600, // 1 hour cache
+  }
+);

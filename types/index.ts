@@ -33,9 +33,10 @@ export interface ReusableHoverCardProps {
   content: React.ReactNode;
   contentClassName?: string;
 }
-
 export interface LocalStorageProps {
   imageFrom: "face-swap" | "remove-bg" | "enhance";
   imgUrl: string;
-  date: number;
+  date: Date;
+  id?: number;
+  userId?: string;
 }

@@ -251,6 +251,7 @@ const ImageUploader = () => {
             <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
               {beforeImg ? (
                 <Image
+                  quality={70}
                   src={beforeImg || "/placeholder.svg"}
                   alt="Original image"
                   fill
@@ -297,6 +298,7 @@ const ImageUploader = () => {
             <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
               {processedImageUrl ? (
                 <Image
+                  quality={70}
                   src={processedImageUrl || "/placeholder.svg"}
                   alt="Processed image"
                   fill

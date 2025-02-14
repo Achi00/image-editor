@@ -41,6 +41,7 @@ const ImageItem = ({ img, isSelected, onSelect }: ImgItemProps) => {
       }`}
     >
       <Image
+        quality={70}
         width={300}
         height={300}
         src={img.imgUrl}

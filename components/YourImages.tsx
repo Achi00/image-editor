@@ -171,9 +171,9 @@ export const ImageSection = ({
   images,
   className,
 }: {
-  title: string;
+  title?: string;
   images: LocalStorageProps[];
-  className: string;
+  className?: string;
 }) => {
   const pathname = usePathname();
   const { removeImage } = useLocalStorageStore();
@@ -189,6 +189,8 @@ export const ImageSection = ({
             <div className="relative aspect-square ">
               <Link href={`${pathname}/?modal=${image.imgUrl}`}>
                 <Image
+                  loading={images.length > 15 ? "lazy" : "eager"}
+                  quality={70}
                   src={image.imgUrl || "/placeholder.svg"}
                   alt={`${image.imageFrom} image`}
                   fill
@@ -203,14 +205,22 @@ export const ImageSection = ({
                 <Trash2 />
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              {new Date(image.date).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
+            <div className="flex justify-between">
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                {new Date(image.date).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+              <p className="font-bold capitalize">
+                {image &&
+                  image?.imageFrom
+                    ?.replace("-", " ")
+                    .replace("remove bg", "Remove Background")}
+              </p>
+            </div>
           </div>
         ))}
       </div>

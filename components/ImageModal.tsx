@@ -46,6 +46,7 @@ const ImageModal = () => {
           X
         </Button>
         <Image
+          quality={70}
           src={modalUrl}
           alt="Modal image"
           fill
