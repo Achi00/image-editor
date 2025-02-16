@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -29,17 +29,16 @@ import {
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useLocalStorageImages } from "@/hooks/useLocalStorageImages";
-import { GetUserImagesFromDb } from "@/utils/GetUserImagesFromDb";
+import { useSession } from "next-auth/react";
 
 const YourImages = () => {
-  // const session = await auth();
+  const { data: session } = useSession();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // stete to check if the image added
   const [showNotification, setShowNotification] = useState(false);
   // get images from zustand selector for memoization
   const images = useLocalStorageStore((state) => state.images);
 
-  // FIX: still shows up onMount
   // show message when new image is added
   useEffect(() => {
     setShowNotification((prev) => (!prev ? true : false));
@@ -57,38 +56,11 @@ const YourImages = () => {
     }
   }, [modalUrl]);
 
-  /* 
-    get filtered images by imageFrom property do display them in different 
-    sections of user images modal
-  */
-
-  //  useMemo to avoid unneccessary calculations on every re-render
-
-  /* 
-    images are refference type but in this case it is fine,
-    because we get zustand selector and not array itself
-  */
-  //  TODO: if user is authenticated, show the images from db else show from local storage
-  // const removeBgImages = useMemo(
-  //   () => images.filter((image) => image.imageFrom === "remove-bg"),
-  //   [images]
-  // );
-
-  // const faceSwapImages = useMemo(
-  //   () => images.filter((image) => image.imageFrom === "face-swap"),
-  //   [images]
-  // );
-
-  // const enhanceImages = useMemo(
-  //   () => images.filter((image) => image.imageFrom === "enhance"),
-  //   [images]
-  // );
-  // if user is authenticated get images from db otherwise get from local storage
   // get images from local storage
   const { removeBgImages, faceSwapImages, enhanceImages } =
     useLocalStorageImages();
-  // get images from database
-  // const userImages = await GetUserImagesFromDb();
+  // if user is authenticated dont return component
+  if (session) return null;
   return (
     <>
       {/* show notification if new image have been added */}
@@ -214,7 +186,7 @@ export const ImageSection = ({
                   year: "numeric",
                 })}
               </p>
-              <p className="font-bold capitalize">
+              <p className="font-bold capitalize text-sm">
                 {image &&
                   image?.imageFrom
                     ?.replace("-", " ")

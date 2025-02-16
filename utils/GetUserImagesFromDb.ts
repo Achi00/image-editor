@@ -1,7 +1,6 @@
 import { db } from "@/database";
 import { userImages } from "@/database/schema";
-import { auth } from "@/lib/auth";
-import { and, eq, inArray, desc } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -39,6 +38,7 @@ export const GetUserImagesFromDb = async (paramValue: {
   return images;
 };
 
+// use unstable_cache for data caching
 export const getAllUserImages = unstable_cache(
   async (session) => {
     return db
