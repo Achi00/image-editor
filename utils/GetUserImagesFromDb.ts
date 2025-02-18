@@ -1,6 +1,6 @@
 import { db } from "@/database";
 import { userImages } from "@/database/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -40,17 +40,28 @@ export const GetUserImagesFromDb = async (paramValue: {
 
 // use unstable_cache for data caching
 export const getAllUserImages = unstable_cache(
-  async (session) => {
-    return db
+  async (session, filter) => {
+    // initial condition for the user ID.
+    let condition = eq(userImages.userId, session.user.id);
+
+    // If a filter is provided, combine the conditions.
+    if (filter) {
+      condition = and(condition, eq(userImages.imageFrom, filter))!;
+    }
+    const query = db
       .select()
       .from(userImages)
-      .where(eq(userImages.userId, session.user.id))
+      .where(condition)
       .orderBy(desc(userImages.date))
       .limit(50);
+
+    return query;
   },
-  ["user-images"], // Single cache key
+
+  [`user-images`, `filter`],
+
   {
-    tags: [`images-${userImages.userId}`], // User-specific tag
-    revalidate: 3600, // 1 hour cache
+    tags: [`user-images`],
+    revalidate: 3600,
   }
 );

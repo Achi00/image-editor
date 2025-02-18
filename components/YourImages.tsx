@@ -6,18 +6,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
-import {
-  Calendar,
-  CircleX,
-  FolderOpen,
-  ImageIcon,
-  Images,
-  Info,
-  Trash2,
-} from "lucide-react";
+import { CircleX, FolderOpen, ImageIcon, Images, Info } from "lucide-react";
 import useLocalStorageStore from "@/store/useLocalStorage";
-import { LocalStorageProps } from "@/types";
-import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -27,9 +17,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useLocalStorageImages } from "@/hooks/useLocalStorageImages";
 import { useSession } from "next-auth/react";
+import { ImageSection } from "./ImageSection";
 
 const YourImages = () => {
   const { data: session } = useSession();
@@ -134,69 +125,6 @@ const YourImages = () => {
         </PopoverContent>
       </Popover>
     </>
-  );
-};
-
-// display image components
-export const ImageSection = ({
-  title,
-  images,
-  className,
-}: {
-  title?: string;
-  images: LocalStorageProps[];
-  className?: string;
-}) => {
-  const pathname = usePathname();
-  const { removeImage } = useLocalStorageStore();
-  return (
-    <div className="mb-4">
-      <h5 className="font-medium mb-2">{title}</h5>
-      <div className={className}>
-        {images.map((image) => (
-          <div
-            key={image.imgUrl}
-            className="space-y-4 border-2 p-2 rounded-lg max-w-[80vw] md:max-w-full sm:max-w-full"
-          >
-            <div className="relative aspect-square ">
-              <Link href={`${pathname}/?modal=${image.imgUrl}`}>
-                <Image
-                  loading={images.length > 15 ? "lazy" : "eager"}
-                  quality={70}
-                  src={image.imgUrl || "/placeholder.svg"}
-                  alt={`${image.imageFrom} image`}
-                  fill
-                  className="object-cover cursor-pointer rounded-md hover:scale-[1.02]  transition-transform"
-                />
-              </Link>
-              <Button
-                className="cursor-pointer relative z-10 m-2"
-                variant="outline"
-                onClick={() => removeImage(image.imgUrl)}
-              >
-                <Trash2 />
-              </Button>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                {new Date(image.date).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </p>
-              <p className="font-bold capitalize text-sm">
-                {image &&
-                  image?.imageFrom
-                    ?.replace("-", " ")
-                    .replace("remove bg", "Remove Background")}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 };
 

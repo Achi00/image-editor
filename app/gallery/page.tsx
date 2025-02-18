@@ -1,20 +1,70 @@
-import { ImageSection } from "@/components/YourImages";
 import { auth } from "@/lib/auth";
 import { LocalStorageProps } from "@/types";
 import { getAllUserImages } from "@/utils/GetUserImagesFromDb";
 import React, { Suspense } from "react";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftRight, Eraser } from "lucide-react";
+import { ImageSection } from "@/components/ImageSection";
 
-const page = async () => {
+const page = async ({
+  searchParams,
+}: {
+  searchParams: { filter?: string };
+}) => {
   const session = await auth();
-
   if (!session?.user?.id) {
-    throw new Error("Unauthorized");
+    redirect("/");
+    // throw new Error("Unauthorized");
   }
-  const images = (await getAllUserImages(session)) as LocalStorageProps[];
+  const filters = await searchParams;
+  const filterParam = filters.filter;
+  console.log("searchParams: " + filters.filter);
+
+  const images = (await getAllUserImages(
+    session,
+    filterParam
+  )) as LocalStorageProps[];
 
   return (
     <div>
       <Suspense fallback="Loading images...">
+        <div className="w-full flex p-4 gap-8 justify-center items-center ">
+          <Button
+            className={`${
+              !filterParam && "bg-[#E0E7FF] text-black"
+            } hover:text-white`}
+          >
+            <Link href="/gallery">All</Link>
+          </Button>
+          <Button
+            className={`${
+              filterParam === "remove-bg" && "bg-[#E0E7FF] text-black"
+            } hover:text-white`}
+          >
+            <Link
+              className="flex gap-3 items-center"
+              href="/gallery?filter=remove-bg"
+            >
+              <Eraser />
+              Remove Background
+            </Link>
+          </Button>
+          <Button
+            className={`${
+              filterParam === "face-swap" && "bg-[#E0E7FF] text-black"
+            } hover:text-white`}
+          >
+            <Link
+              className="flex gap-3 items-center"
+              href="/gallery?filter=face-swap"
+            >
+              <ArrowLeftRight />
+              Face Swap
+            </Link>
+          </Button>
+        </div>
         <ImageSection
           className="grid xl:grid-cols-3 sm:grid-cols-1 gap-8 overflow-auto p-8"
           images={images}

@@ -1,17 +1,19 @@
 "use client";
 import Image from "next/image";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams, usePathname, redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import DownloadButton from "./DownloadButton";
 import { useImageStore } from "@/store/useImageSelection";
 
 const ImageModal = () => {
-  const route = useRouter();
+  // const route = useRouter();
   // get image url from modal url
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const modalUrl = searchParams.get("modal");
+  // keep filter params
+  const filterParam = searchParams.get("filter");
 
   // pass image url to download api
   const { setImageUrl } = useImageStore();
@@ -31,7 +33,12 @@ const ImageModal = () => {
 
   // close modal and return to page where from image was open
   const handleClose = () => {
-    route.push(`${pathname}`);
+    // Preserve the filter parameter when closing the modal if its applayed
+    if (filterParam) {
+      redirect(`${pathname}?filter=${filterParam}`);
+    } else {
+      redirect(pathname);
+    }
   };
 
   if (!modalUrl) return null;
