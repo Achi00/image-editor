@@ -180,7 +180,6 @@ const ImageUploader = () => {
       const cloudinaryUrl = await UploadImgCloudinary(processedUrl);
       setImageUrl(cloudinaryUrl);
       // save image url in local storage or database based on user authentication
-      console.log("saving image url...");
       // pass image url to save image hook, it will decide where to save it, in local storage or database
       saveImageData(cloudinaryUrl, "remove-bg");
     } catch (error) {

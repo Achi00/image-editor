@@ -5,8 +5,10 @@ import { useErrorStore } from "@/store/useErrorStore";
 
 // user image only recives single image and not array of data like FormFields prop
 type FaceSwapInput = {
-  user_image: File;
-  generated_image_url: string;
+  target_image: File;
+  source_image: string;
+  operation: string;
+  enhance_result?: boolean;
 };
 
 // face swap and upload
@@ -16,13 +18,15 @@ export const useFaceSwap = () => {
     mutationFn: async (input: FaceSwapInput) => {
       // create FormData
       const formData = new FormData();
-      formData.append("user_image", input.user_image);
-      formData.append("generated_image_url", input.generated_image_url);
+      formData.append("source_image", input.source_image);
+      formData.append("target_image", input.target_image);
+      formData.append("operation", "swap-face");
+      // formData.append("enhance_result", true);
 
       // face swap API
       const swapRes = await fetch(
-        // "http://127.0.0.1:5000/swap-face",
-        "https://face-swap-api.wordcrafter.io/swap-face",
+        // "http://127.0.0.1:5000/predictions",
+        "https://face-swap-api.wordcrafter.io/predictions",
         {
           method: "POST",
           body: formData,

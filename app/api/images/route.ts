@@ -64,7 +64,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { imageUrl, imageFrom } = body;
-    console.log("image url", imageUrl);
     const session = await auth();
 
     if (!session?.user?.id) {

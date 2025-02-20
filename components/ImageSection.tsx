@@ -47,6 +47,7 @@ export const ImageSection = ({
                   className="object-cover cursor-pointer rounded-md hover:scale-[1.02]  transition-transform"
                 />
               </Link>
+              {/* TODO: delete from database or localstorage */}
               <Button
                 className="cursor-pointer relative z-10 m-2"
                 variant="outline"

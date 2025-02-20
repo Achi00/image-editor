@@ -8,9 +8,8 @@ import {
   useSelectedSourceId,
 } from "@/store/useImageSelection";
 import SelectImage from "../SelectImage";
-import { galleryImages, imagesArr } from "@/lib/images";
+import { imagesArr } from "@/lib/images";
 import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,

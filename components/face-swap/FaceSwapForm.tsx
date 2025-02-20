@@ -81,7 +81,6 @@ const FaceSwapForm = () => {
   const hasUserImage = Boolean(userImage?.[0]);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // clear error
     clearError();
     try {
       // Handle both cases: uploaded file OR gallery image
@@ -95,6 +94,7 @@ const FaceSwapForm = () => {
           type: blob.type,
         });
       } else {
+        // user uploaded image
         const userInputFile = data.user_image[0];
         userImageFile = new File(
           [userInputFile],
@@ -106,13 +106,15 @@ const FaceSwapForm = () => {
         );
       }
 
-      console.log("userImageFile", userImageFile);
+      // console.log("passed user image", userImageFile);
+      // console.log("selected bg image", selectedBgImage);
 
       const resUrl = await mutateAsync({
         // users image
-        user_image: userImageFile,
-        // image where face will be added
-        generated_image_url: selectedBgImage,
+        target_image: userImageFile,
+        // image where face will be moved
+        source_image: selectedBgImage,
+        operation: "swap-face",
       });
       setImage(resUrl);
 
@@ -144,11 +146,11 @@ const FaceSwapForm = () => {
             title="Keep In Mind!"
             content={
               <>
-                Usually first request takes longes, about{" "}
-                <span className="font-bold">1 Minute</span>
+                Usually first request takes longer, about{" "}
+                <span className="font-bold">45 seconds</span>.
                 <br />
-                after that requests take about{" "}
-                <span className="font-bold">30 seconds</span>
+                After first requests it takes about{" "}
+                <span className="font-bold">15 seconds</span>
               </>
             }
           />

@@ -19,7 +19,7 @@ export function useSaveImage() {
           console.log("User not authenticated, saving to localStorage");
           addImage({
             imageFrom: "remove-bg",
-            date: Date.now(),
+            date: new Date(),
             imgUrl: imageUrl,
           });
         } else {
