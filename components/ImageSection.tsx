@@ -8,6 +8,8 @@ import { Button } from "./ui/button";
 import { Calendar, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { DeleteImage } from "@/utils/DeleteImageFromDB";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 // display image components
 export const ImageSection = ({
@@ -26,14 +28,24 @@ export const ImageSection = ({
   // delete image from local storage or from database if user is authenticated
   const { removeImage } = useLocalStorageStore();
 
+  const [allImages, setAllImages] = useState<LocalStorageProps[]>(images);
+
   const handleDelete = async (imgUrl: string) => {
+    // if user is authenticated delete from database
     if (session?.user.id) {
       try {
         await DeleteImage(session, imgUrl);
+        // update state with removing deleted image from array
+        setAllImages((prevImg) =>
+          prevImg.filter((img) => img.imgUrl !== imgUrl)
+        );
+        toast.success("Image Removed Successfully");
       } catch (error) {
+        toast.error("Something went wrong");
         console.error(error);
       }
     } else {
+      // delete from local storage
       removeImage(imgUrl);
     }
   };
@@ -46,9 +58,10 @@ export const ImageSection = ({
 
   return (
     <div className="mb-4">
+      <Toaster />
       <h5 className="font-medium mb-2">{title}</h5>
       <div className={className}>
-        {images.map((image) => (
+        {allImages.map((image) => (
           <div
             key={image.imgUrl}
             className="space-y-4 border-2 p-2 rounded-lg max-w-[80vw] md:max-w-full sm:max-w-full"
@@ -56,7 +69,7 @@ export const ImageSection = ({
             <div className="relative aspect-square ">
               <Link href={createModalLink(image.imgUrl)}>
                 <Image
-                  loading={images.length > 15 ? "lazy" : "eager"}
+                  loading={allImages.length > 15 ? "lazy" : "eager"}
                   quality={70}
                   src={image.imgUrl || "/placeholder.svg"}
                   alt={`${image.imageFrom} image`}
