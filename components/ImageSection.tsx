@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
 import { Calendar, Trash2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { DeleteImage } from "@/utils/DeleteImageFromDB";
 
 // display image components
 export const ImageSection = ({
@@ -17,9 +19,24 @@ export const ImageSection = ({
   images: LocalStorageProps[];
   className?: string;
 }) => {
+  // get user session
+  const { data: session } = useSession();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  // delete image from local storage or from database if user is authenticated
   const { removeImage } = useLocalStorageStore();
+
+  const handleDelete = async (imgUrl: string) => {
+    if (session?.user.id) {
+      try {
+        await DeleteImage(session, imgUrl);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      removeImage(imgUrl);
+    }
+  };
 
   const createModalLink = (imageUrl: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -51,7 +68,7 @@ export const ImageSection = ({
               <Button
                 className="cursor-pointer relative z-10 m-2"
                 variant="outline"
-                onClick={() => removeImage(image.imgUrl)}
+                onClick={() => handleDelete(image.imgUrl)}
               >
                 <Trash2 />
               </Button>

@@ -9,7 +9,10 @@ export function useSaveImage() {
   const { data: session } = useSession();
 
   const saveImageData = useCallback(
-    async (imageUrl: string, imageFrom: string) => {
+    async (
+      imageUrl: string,
+      imageFrom: "face-swap" | "remove-bg" | "enhance"
+    ) => {
       if (!imageUrl) {
         throw new Error("No image to save");
       }
@@ -18,7 +21,7 @@ export function useSaveImage() {
         if (!session) {
           console.log("User not authenticated, saving to localStorage");
           addImage({
-            imageFrom: "remove-bg",
+            imageFrom: imageFrom,
             date: new Date(),
             imgUrl: imageUrl,
           });

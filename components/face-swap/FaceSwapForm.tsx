@@ -23,6 +23,7 @@ import DownloadButton from "../DownloadButton";
 import ResponsiveCard from "../ReusableHoverCard";
 import { useErrorStore } from "@/store/useErrorStore";
 import { useSaveImage } from "@/hooks/useSaveImage";
+import { useSubmitText } from "@/hooks/useSubmitText";
 const FaceSwapForm = () => {
   // store image url
   const [image, setImage] = useState<string | null>();
@@ -31,6 +32,8 @@ const FaceSwapForm = () => {
   // save image url, function will decide where to save image url, local storage or database
   const { saveImageData } = useSaveImage();
 
+  // loading text
+  const { loadingText } = useSubmitText(isPending);
   // zustand store error
   const error = useErrorStore((state) => state.error);
   const clearError = useErrorStore((state) => state.clearError);
@@ -105,9 +108,6 @@ const FaceSwapForm = () => {
           }
         );
       }
-
-      // console.log("passed user image", userImageFile);
-      // console.log("selected bg image", selectedBgImage);
 
       const resUrl = await mutateAsync({
         // users image
@@ -253,7 +253,7 @@ const FaceSwapForm = () => {
               <>
                 {/* TODO: make changable text */}
                 <Loader2 className="animate-spin" />
-                Please wait
+                {loadingText}
               </>
             ) : (
               "Submit"
