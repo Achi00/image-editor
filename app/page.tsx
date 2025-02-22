@@ -26,11 +26,15 @@ const Links: LinkCardProps[] = [
   },
 ];
 
-const page = () => {
+const page = async ({
+  searchParams,
+}: {
+  searchParams: { authStatus?: string };
+}) => {
+  const status = await searchParams;
   return (
-    // <div className="w-full min-h-screen flex items-center justify-center">
     <main className="flex-1">
-      <Hero />
+      <Hero authStatus={status.authStatus || ""} />
       <div className="flex w-full items-center justify-center gap-10">
         {Links.map((link: LinkCardProps) => (
           <LinkCards
@@ -46,7 +50,6 @@ const page = () => {
       </div>
       <HowItWorks />
     </main>
-    // </div>
   );
 };
 

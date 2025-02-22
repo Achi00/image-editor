@@ -33,7 +33,7 @@ export default auth((req) => {
   // Handle protected routes
   if (!isLoggedIn && privateRoutes.includes(nextUrl.pathname)) {
     return NextResponse.redirect(
-      new URL(`/?callbackUrl=notAuthenticated`, nextUrl)
+      new URL(`/?authStatus=notAuthenticated`, nextUrl)
     );
   }
 
