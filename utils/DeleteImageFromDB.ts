@@ -1,11 +1,9 @@
 import { db } from "@/database";
 import { userImages } from "@/database/schema";
-import { auth } from "@/lib/auth";
 import { and, eq } from "drizzle-orm";
 import { Session } from "next-auth";
 
 export const DeleteImage = async (session: Session, imageUrl: string) => {
-  //   const session = await auth();
   if (!session) {
     throw new Error("User not authenticated");
   }

@@ -5,8 +5,7 @@ const steps = [
   {
     icon: Upload,
     title: "Upload Your Image",
-    description:
-      "Simply drag and drop or select the image you want to process.",
+    description: "Select the image you want to process.",
   },
   {
     icon: Cpu,

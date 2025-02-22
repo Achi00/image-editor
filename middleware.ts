@@ -2,7 +2,14 @@ import { auth } from "./lib/auth";
 import { NextResponse } from "next/server";
 
 const authRoutes = ["/login", "/register"];
-const publicRoutes = ["/", "/remove-bg", "/face-swap", "/enhance-quality"];
+const publicRoutes = [
+  "/",
+  "/remove-bg",
+  "/face-swap",
+  "/enhance-quality",
+  "not-found",
+];
+const privateRoutes = ["/gallery"];
 const apiAuthPrefix = "/api";
 const DEFAULT_LOGIN_REDIRECT = "/";
 
@@ -24,10 +31,7 @@ export default auth((req) => {
   }
 
   // Handle protected routes
-  if (!isLoggedIn && !publicRoutes.includes(nextUrl.pathname)) {
-    // let callbackUrl = nextUrl.pathname;
-    // if (nextUrl.search) callbackUrl += nextUrl.search;
-
+  if (!isLoggedIn && privateRoutes.includes(nextUrl.pathname)) {
     return NextResponse.redirect(
       new URL(`/?callbackUrl=notAuthenticated`, nextUrl)
     );
