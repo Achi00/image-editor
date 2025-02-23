@@ -1,5 +1,5 @@
 "use client";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import useLocalStorageStore from "@/store/useLocalStorageStore";
 import { useMemo } from "react";
 
 export const useLocalStorageImages = () => {

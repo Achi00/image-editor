@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 import { CircleX, FolderOpen, ImageIcon, Images, Info } from "lucide-react";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import useLocalStorageStore from "@/store/useLocalStorageStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,

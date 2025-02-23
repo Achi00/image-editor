@@ -1,4 +1,4 @@
-import { useImageStore } from "@/store/useImageSelection";
+import { useImageStore } from "@/store/useImageSelectionStore";
 
 export const downloadImage = async () => {
   try {

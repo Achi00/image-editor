@@ -4,7 +4,7 @@ import { useSearchParams, usePathname, redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import DownloadButton from "./DownloadButton";
-import { useImageStore } from "@/store/useImageSelection";
+import { useImageStore } from "@/store/useImageSelectionStore";
 
 const ImageModal = () => {
   // const route = useRouter();

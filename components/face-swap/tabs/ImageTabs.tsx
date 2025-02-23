@@ -6,7 +6,7 @@ import GenerateTab from "./GenerateTab";
 import {
   useImageActions,
   useSelectedSourceId,
-} from "@/store/useImageSelection";
+} from "@/store/useImageSelectionStore";
 import SelectImage from "../SelectImage";
 import { imagesArr } from "@/lib/images";
 import { useSession } from "next-auth/react";
@@ -26,11 +26,12 @@ export default function ImageTabs() {
   const { data: session } = useSession();
   const { setSelectedBackgroundSourceId } = useImageActions();
   const selectedSourceId = useSelectedSourceId();
-  const [, setActiveTab] = useState("select");
+  const [activeTab, setActiveTab] = useState("select");
 
   return (
     <Tabs
       defaultValue="select"
+      value={activeTab}
       className="w-full max-w-4xl mx-auto"
       onValueChange={setActiveTab}
     >
@@ -42,7 +43,7 @@ export default function ImageTabs() {
       </TabsList>
       <TabsContent value="generate">
         {session?.user.id ? (
-          <GenerateTab />
+          <GenerateTab userId={session?.user.id} setActiveTab={setActiveTab} />
         ) : (
           <Card className="w-full max-w-3xl mx-auto mt-8">
             <CardHeader>

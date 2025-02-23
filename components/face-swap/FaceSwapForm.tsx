@@ -13,7 +13,7 @@ import {
   useImageStore,
   useSelectedSourceId,
   useSelectedTargetId,
-} from "@/store/useImageSelection";
+} from "@/store/useImageSelectionStore";
 import { galleryImages, imagesArr } from "@/lib/images";
 import { getImageById } from "@/utils/GetImageById";
 import ImageTabs from "./tabs/ImageTabs";
@@ -163,7 +163,7 @@ const FaceSwapForm = () => {
                 If you dont want to upload your image, you can select one from
                 our gallery by{" "}
                 <span className="font-semibold">switching toggle</span> below,
-                this image will be sellected as{" "}
+                this image will be selected as{" "}
                 <span className="font-semibold">Target Face</span>
               </>
             }

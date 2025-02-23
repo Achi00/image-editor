@@ -93,6 +93,7 @@ export default function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link
                       href="/gallery"
+                      prefetch={true}
                       className="flex items-center cursor-pointer"
                     >
                       <ImageIcon className="mr-2 h-4 w-4" />

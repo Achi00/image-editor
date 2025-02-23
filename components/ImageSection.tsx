@@ -1,5 +1,5 @@
 "use client";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import useLocalStorageStore from "@/store/useLocalStorageStore";
 import { LocalStorageProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";

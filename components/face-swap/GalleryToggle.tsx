@@ -18,7 +18,7 @@ import { Images } from "lucide-react";
 import {
   useImageActions,
   useSelectedTargetId,
-} from "@/store/useImageSelection";
+} from "@/store/useImageSelectionStore";
 
 const GalleryToggle = () => {
   const [isGallerySelected, setIsGallerySelected] = useState(false);

@@ -40,3 +40,11 @@ export interface LocalStorageProps {
   id?: number;
   userId?: string;
 }
+
+export interface UserType {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  stableDiffusion: number;
+}

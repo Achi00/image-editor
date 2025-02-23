@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "stableDiffusion" integer DEFAULT 5;

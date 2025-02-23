@@ -13,7 +13,11 @@ const buttons = [
   {
     label: "All",
     filter: "",
-    children: <Link href="/gallery">All</Link>,
+    children: (
+      <Link href="/gallery" prefetch={true}>
+        All
+      </Link>
+    ),
   },
   {
     label: "Remove Background",
@@ -22,6 +26,7 @@ const buttons = [
       <Link
         className="flex gap-3 items-center"
         href="/gallery?filter=remove-bg"
+        prefetch={true}
       >
         <Eraser />
         Remove Background
@@ -35,6 +40,7 @@ const buttons = [
       <Link
         className="flex gap-3 items-center"
         href="/gallery?filter=face-swap"
+        prefetch={true}
       >
         <ArrowLeftRight />
         Face Swap

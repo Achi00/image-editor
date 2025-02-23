@@ -1,6 +1,6 @@
 "use client";
 import { useCallback } from "react";
-import useLocalStorageStore from "@/store/useLocalStorage";
+import useLocalStorageStore from "@/store/useLocalStorageStore";
 import { useSession } from "next-auth/react";
 import { SaveImageInDb } from "@/utils/SaveImageInDb";
 

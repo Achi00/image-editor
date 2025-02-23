@@ -19,7 +19,7 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  // TODO: add stable diffusion usage field
+  stableDiffusion: integer("stableDiffusion").notNull().default(5),
 });
 
 export const userImages = pgTable("user_images", {

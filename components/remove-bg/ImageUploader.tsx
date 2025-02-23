@@ -20,7 +20,7 @@ import { Button } from "../ui/button";
 import { ImageIcon, Images, Loader2, Upload } from "lucide-react";
 import DownloadButton from "../DownloadButton";
 import { Toaster } from "react-hot-toast";
-import { useImageStore } from "@/store/useImageSelection";
+import { useImageStore } from "@/store/useImageSelectionStore";
 import { UploadImgCloudinary } from "@/utils/UploadImgCloudinary";
 import useTimer from "@/hooks/useTimer";
 import { useSaveImage } from "@/hooks/useSaveImage";

@@ -24,7 +24,7 @@ export const { handlers, auth, signIn } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user }) {
       // First login: user contains database user
       if (user) {
         token.id = user.id;
