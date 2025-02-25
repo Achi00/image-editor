@@ -11,6 +11,7 @@ import GalleryToggle from "./GalleryToggle";
 import {
   useImageActions,
   useImageStore,
+  useSelectedBackgroundSourceUrl,
   useSelectedSourceId,
   useSelectedTargetId,
 } from "@/store/useImageSelectionStore";
@@ -24,6 +25,7 @@ import ResponsiveCard from "../ReusableHoverCard";
 import { useErrorStore } from "@/store/useErrorStore";
 import { useSaveImage } from "@/hooks/useSaveImage";
 import { useSubmitText } from "@/hooks/useSubmitText";
+import SdImageSelected from "./SdImageSelected";
 const FaceSwapForm = () => {
   // store image url
   const [image, setImage] = useState<string | null>();
@@ -44,6 +46,9 @@ const FaceSwapForm = () => {
   const selectedBackgroundSourceId = useSelectedSourceId();
   const { setSelectedTargetFaceId } = useImageActions();
 
+  // if user generated image with stable diffusion
+  const selectedBackgroundUrl = useSelectedBackgroundSourceUrl();
+
   // pass image url to download api
   const { setImageUrl } = useImageStore();
 
@@ -61,7 +66,10 @@ const FaceSwapForm = () => {
   }
   // return selected background source
   let selectedBgImage: string = "";
-  if (selectedBackgroundSourceId) {
+  // if we have stable diffusion generated image use it as background image or use seleted image
+  if (selectedBackgroundUrl) {
+    selectedBgImage = selectedBackgroundUrl;
+  } else if (selectedBackgroundSourceId) {
     selectedBgImage = getImageById(selectedBackgroundSourceId, imagesArr);
   }
 
@@ -233,20 +241,24 @@ const FaceSwapForm = () => {
             </p>
           )}
         </div>
-
+        <div className="pt-10">
+          {selectedBackgroundUrl && <SdImageSelected />}
+        </div>
         <div className="pt-16">
           <Button
             type="submit"
             className={`w-full flex items-center gap-2 ${
               (isPending ||
                 (selectedTargetId === null && !hasUserImage) ||
-                selectedBackgroundSourceId === null) &&
+                (selectedBackgroundSourceId === null &&
+                  selectedBackgroundUrl === null)) &&
               "bg-gray-500"
             }`}
             disabled={
               isPending ||
               (selectedTargetId === null && !hasUserImage) ||
-              selectedBackgroundSourceId === null
+              (selectedBackgroundSourceId === null &&
+                selectedBackgroundUrl === null)
             }
           >
             {isPending ? (

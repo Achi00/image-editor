@@ -10,10 +10,22 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  useImageActions,
+  useSelectedBackgroundSourceUrl,
+} from "@/store/useImageSelectionStore";
 import { useUserStore } from "@/store/useUserStore";
 import { UserType } from "@/types";
-import { AlertCircle, ImageIcon, TriangleAlert, Zap } from "lucide-react";
-import { useEffect } from "react";
+import { stableDiffusion } from "@/utils/StableDiffusion";
+import {
+  AlertCircle,
+  ImageIcon,
+  Loader2,
+  TriangleAlert,
+  Zap,
+} from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface StableDiffusionLimitProps {
   onSwitchTab: () => void;
@@ -26,8 +38,18 @@ export default function GenerateTab({
   userId: string;
   setActiveTab: (value: string) => void;
 }) {
+  const [input, setInput] = useState({ prompt: "", negativePrompt: "" });
+  const [disable, setDisable] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<any>();
+  // TODO: something causes re-render after submit
+  // store generated image url
+  const { setSelectedBackgroundSourceUrl } = useImageActions();
+  const [imageUrl, setImageUrl] = useState("");
+
   const getUser = useUserStore((state) => state.getUser);
   const user = useUserStore((state) => state.users[userId]) as UserType;
+
   useEffect(() => {
     if (!user) {
       getUser(userId);
@@ -36,10 +58,42 @@ export default function GenerateTab({
 
   if (!user) return <div>Loading...</div>;
 
-  // if (user.stableDiffusion === 0)
+  // disable component if user hit stable diffusion usage limit
   if (user.stableDiffusion === 0) {
     return <StableDiffusionLimit onSwitchTab={() => setActiveTab("select")} />;
   }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput((prev) => {
+      const newInput = { ...prev, [e.target.name]: e.target.value };
+      setDisable(newInput.prompt === "");
+
+      return newInput;
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      // Reset the URL
+      setSelectedBackgroundSourceUrl(null);
+      setLoading(true);
+      const image = await stableDiffusion({ ...input });
+      console.log("url: " + image);
+      // to diaplay image
+      setImageUrl(image);
+      console.log(JSON.stringify(input));
+      // store stable diffusion generated image url in store
+      if (image !== "") {
+        setSelectedBackgroundSourceUrl(image);
+      }
+    } catch (error: any) {
+      setError(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6 p-6 w-full bg-white rounded-lg shadow">
@@ -53,29 +107,66 @@ export default function GenerateTab({
           to generate any more images
         </AlertDescription>
       </Alert>
-      <div className="space-y-2">
-        <Label htmlFor="prompt">Prompt</Label>
-        <Input
-          id="prompt"
-          required={true}
-          placeholder="Describe the image you want to generate..."
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="negative-prompt">Negative Prompt (Optional)</Label>
-        <Input
-          id="negative-prompt"
-          placeholder="Describe what you don't want in the image..."
-        />
-      </div>
-      <div className="flex justify-between items-center">
-        <Button>Generate Image</Button>
-        <div className="text-sm text-gray-500">
-          Image will appear here after generation
+      {error && (
+        <Alert>
+          <TriangleAlert className="h-4 w-4 " />
+          <AlertTitle>There was error while generating the image</AlertTitle>
+          <AlertDescription>{error.message}</AlertDescription>
+        </Alert>
+      )}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <div className="space-y-2">
+          <Label htmlFor="prompt">Prompt</Label>
+          <Input
+            value={input.prompt}
+            onChange={(e) => handleChange(e)}
+            name="prompt"
+            id="prompt"
+            required={true}
+            placeholder="Describe the image you want to generate..."
+          />
         </div>
-      </div>
-      <div className="mt-4 aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-        <span className="text-gray-400">Generated image will appear here</span>
+        <div className="space-y-2">
+          <Label htmlFor="negative-prompt">Negative Prompt (Optional)</Label>
+          <Input
+            value={input.negativePrompt}
+            onChange={(e) => handleChange(e)}
+            name="negativePrompt"
+            id="negative-prompt"
+            placeholder="Describe what you don't want in the image..."
+          />
+        </div>
+        <div className="flex mt-4 justify-between items-center">
+          <Button
+            disabled={disable || loading}
+            type="submit"
+            className={`${disable && "bg-gray-500"}`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Generate Image"
+            )}
+          </Button>
+        </div>
+      </form>
+      <div className="mt-4 relative aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt="stable diffusion image"
+            width={550}
+            height={550}
+            quality={70}
+          />
+        ) : (
+          <span className="text-gray-400">
+            Generated image will appear here
+          </span>
+        )}
       </div>
     </div>
   );
