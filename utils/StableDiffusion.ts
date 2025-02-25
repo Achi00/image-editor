@@ -1,9 +1,11 @@
 export const stableDiffusion = async ({
   prompt,
   negativePrompt,
+  userId,
 }: {
   prompt: string;
   negativePrompt?: string;
+  userId: string;
 }) => {
   try {
     const res = await fetch("/api/sd", {
@@ -16,10 +18,35 @@ export const stableDiffusion = async ({
     if (!res.ok) {
       throw new Error("failed to generate image");
     }
+    let updatedData;
     const data = await res.json();
-    console.log("Image URL:", data.image);
-    const imageUrl = data.image;
-    return imageUrl;
+    console.log("data:", data);
+    if (data.success) {
+      try {
+        // update user's stable diffusion limit count, reduce by one
+        const updateRes = await fetch("/api/sd", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }), // Fix: Send userId as an object
+        });
+
+        if (!updateRes.ok) {
+          throw new Error("Failed to update user generations");
+        }
+
+        updatedData = await updateRes.json();
+        console.log("update data:", updatedData);
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+      const resultImg = data.image;
+      return { resultImg, updatedData };
+    } else {
+      return data.message;
+    }
   } catch (error) {
     console.error(error);
   }

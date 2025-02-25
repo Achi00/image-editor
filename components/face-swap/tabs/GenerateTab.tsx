@@ -25,7 +25,7 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface StableDiffusionLimitProps {
   onSwitchTab: () => void;
@@ -42,6 +42,8 @@ export default function GenerateTab({
   const [disable, setDisable] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>();
+  const [sdCount, setSdCount] = useState<number>();
+
   // TODO: something causes re-render after submit
   // store generated image url
   const { setSelectedBackgroundSourceUrl } = useImageActions();
@@ -54,12 +56,15 @@ export default function GenerateTab({
     if (!user) {
       getUser(userId);
     }
+    // set users stable diffusion generation count
+    setSdCount(user?.stableDiffusion);
   }, [getUser, user, userId]);
 
   if (!user) return <div>Loading...</div>;
 
   // disable component if user hit stable diffusion usage limit
-  if (user.stableDiffusion === 0) {
+  // TODO: when count hits 0 it will not show generated image and will straight show this component
+  if (sdCount === 0) {
     return <StableDiffusionLimit onSwitchTab={() => setActiveTab("select")} />;
   }
 
@@ -78,14 +83,27 @@ export default function GenerateTab({
       // Reset the URL
       setSelectedBackgroundSourceUrl(null);
       setLoading(true);
-      const image = await stableDiffusion({ ...input });
-      console.log("url: " + image);
-      // to diaplay image
-      setImageUrl(image);
-      console.log(JSON.stringify(input));
-      // store stable diffusion generated image url in store
-      if (image !== "") {
-        setSelectedBackgroundSourceUrl(image);
+      const { resultImg, updatedData } = await stableDiffusion({
+        ...input,
+        userId: user.id,
+      });
+      // update stable diffusion generation limit
+      if (typeof updatedData.remainingGenerations === "number") {
+        setSdCount(updatedData.remainingGenerations);
+      }
+      console.log("url: " + resultImg);
+      if (resultImg === "image generation limit reached") {
+        setError(
+          "Image generation limit reached, you can't generate any more images with stable diffusion"
+        );
+      } else {
+        // to diaplay image
+        setImageUrl(resultImg);
+        console.log(JSON.stringify(input));
+        // store stable diffusion generated image url in store
+        if (resultImg !== "") {
+          setSelectedBackgroundSourceUrl(resultImg);
+        }
       }
     } catch (error: any) {
       setError(error.message);
@@ -99,19 +117,17 @@ export default function GenerateTab({
     <div className="space-y-6 p-6 w-full bg-white rounded-lg shadow">
       <Alert>
         <TriangleAlert className="h-4 w-4 " />
-        <AlertTitle>
-          You have {user.stableDiffusion} Generations left
-        </AlertTitle>
+        <AlertTitle>You have {sdCount} Generations left</AlertTitle>
         <AlertDescription>
           After using all free stableDiffusion generations you will not be able
           to generate any more images
         </AlertDescription>
       </Alert>
       {error && (
-        <Alert>
+        <Alert variant="destructive">
           <TriangleAlert className="h-4 w-4 " />
-          <AlertTitle>There was error while generating the image</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
+          <AlertTitle>There was problem while generating the image</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
