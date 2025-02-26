@@ -1,13 +1,29 @@
 import { AlertCircle } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
-import { useImageActions } from "@/store/useImageSelectionStore";
+import {
+  useImageActions,
+  useSelectedBackgroundSourceUrl,
+} from "@/store/useImageSelectionStore";
+import { redirect } from "next/navigation";
 
 const SdImageSelected = () => {
   const { setSelectedBackgroundSourceUrl } = useImageActions();
+  // Get the current URL value
+  const backgroundUrl = useSelectedBackgroundSourceUrl();
+
+  // Example usage:
+  const handleImageSelect = (url: string) => {
+    setSelectedBackgroundSourceUrl(url);
+  };
 
   const handleCancel = () => {
-    setSelectedBackgroundSourceUrl(null);
+    console.log(backgroundUrl);
+  };
+
+  const openModal = () => {
+    console.log();
+    redirect(`?modal=${backgroundUrl}`);
   };
   return (
     <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -25,6 +41,14 @@ const SdImageSelected = () => {
           className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
         >
           Remove
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={openModal}
+          className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
+        >
+          Show Image
         </Button>
       </div>
       <div className="flex items-start space-x-2 text-sm text-blue-600">

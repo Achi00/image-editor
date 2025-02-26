@@ -34,15 +34,24 @@ export async function POST(req: Request) {
       negativePrompt: negativePrompt,
     };
 
-    const res = await replicate.run("google/imagen-3", { input });
+    try {
+      const res = await replicate.run("google/imagen-3", { input });
 
-    const resultString = String(res);
-    console.log("Result as string:", resultString);
+      const resultString = String(res);
+      console.log("Result as string:", resultString);
 
-    return Response.json({
-      success: true,
-      image: resultString,
-    });
+      return Response.json({
+        success: true,
+        image: resultString,
+      });
+    } catch (error) {
+      console.error(error);
+      return Response.json({
+        success: false,
+        message:
+          "This can happen if the generated image was flagged by safety filters",
+      });
+    }
   } else {
     console.log("You don't have any generations left");
     return NextResponse.json({

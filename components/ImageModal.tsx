@@ -21,7 +21,10 @@ const ImageModal = () => {
   useEffect(() => {
     if (modalUrl) {
       const hostName = new URL(modalUrl);
-      if (hostName.hostname === "res.cloudinary.com") {
+      if (
+        hostName.hostname === "res.cloudinary.com" ||
+        hostName.hostname === "replicate.delivery"
+      ) {
         setImageUrl(modalUrl);
         document.body.style.overflow = "hidden";
       }

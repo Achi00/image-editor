@@ -109,9 +109,11 @@ const FaceSwapForm = () => {
         const userInputFile = data.user_image[0];
         userImageFile = new File(
           [userInputFile],
-          `user-upload-${Date.now()}${getFileExtension(userInputFile.name)}`,
+          `user-upload-${Date.now()}${getFileExtension(
+            userInputFile?.name || Math.random().toString()
+          )}`,
           {
-            type: userInputFile.type || "image/jpeg", // Fallback type
+            type: userInputFile?.type || "image/jpeg", // Fallback type
             lastModified: Date.now(),
           }
         );

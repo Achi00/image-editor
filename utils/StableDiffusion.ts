@@ -16,7 +16,9 @@ export const stableDiffusion = async ({
       }),
     });
     if (!res.ok) {
-      throw new Error("failed to generate image");
+      throw new Error(
+        "failed to generate image, This can happen if the generated image was flagged by safety filters"
+      );
     }
     let updatedData;
     const data = await res.json();
