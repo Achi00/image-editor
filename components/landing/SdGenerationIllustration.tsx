@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import messi from "@/public/faces/face4.jpg";
 
-const SdGeneration = () => {
+const SdGenerationIllustration = () => {
   return (
     <div className="w-full p-6">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
@@ -13,11 +13,10 @@ const SdGeneration = () => {
           </h2>
           <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">
             You are not limited by images, if you want more wide range of
-            options you can generate new image with stable diffusion, enter
-            prompt upload or choose face image
+            options you can generate new image with stable diffusionby entering
+            prompt, then uploading or choosing face image
           </p>
         </div>
-        {/* Left side - Title and description */}
         <div>
           <div className="bg-white rounded-lg border p-6 shadow-sm">
             <div className="flex justify-between flex-col md:flex-row items-center gap-8">
@@ -83,4 +82,4 @@ const SdGeneration = () => {
   );
 };
 
-export default SdGeneration;
+export default SdGenerationIllustration;

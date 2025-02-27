@@ -6,7 +6,6 @@ const RemoveBGIllustration = () => {
   return (
     <div className="w-full p-6">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
-        {/* Left side - Title and description */}
         <div>
           <div className="bg-white rounded-lg border p-6 shadow-sm">
             <div className="flex justify-between flex-col md:flex-row items-center gap-8">

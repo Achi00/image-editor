@@ -6,7 +6,7 @@ import Hero from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
 import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
-import SdGeneration from "@/components/landing/SdGeneration";
+import SdGenerationIllustration from "@/components/landing/SdGenerationIllustration";
 
 const Links: LinkCardProps[] = [
   {
@@ -60,7 +60,7 @@ const page = async ({
         <div className="border-t"></div>
         <RemoveBGIllustration />
         <div className="border-t"></div>
-        <SdGeneration />
+        <SdGenerationIllustration />
       </div>
       <HowItWorks />
     </main>
