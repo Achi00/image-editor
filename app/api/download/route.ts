@@ -21,12 +21,25 @@ export async function GET(request: NextRequest) {
       throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
     }
 
+    // Get content type and determine file extension
+    const contentType =
+      imageResponse.headers.get("Content-Type") || "image/png";
+    const extension =
+      contentType === "image/jpeg"
+        ? ".jpg"
+        : contentType === "image/png"
+        ? ".png"
+        : contentType === "image/gif"
+        ? ".gif"
+        : ".png";
+
+    const filename = `imagineAI${Date.now()}${extension}`;
+
     // return blob
     const blob = await imageResponse.blob();
     return new NextResponse(blob, {
       headers: {
-        "Content-Type":
-          imageResponse.headers.get("Content-Type") || "image/jpeg",
+        "Content-Type": contentType,
         "Content-Disposition": `attachment; filename="${filename}"`,
       },
     });

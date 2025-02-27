@@ -10,11 +10,21 @@ export const downloadImage = async () => {
     if (!res.ok) {
       throw new Error("Could not download image" + res);
     }
+    // Get content type and determine extension
+    const contentType = res.headers.get("Content-Type") || "image/png";
+    const extension =
+      contentType === "image/jpeg"
+        ? ".jpg"
+        : contentType === "image/png"
+        ? ".png"
+        : contentType === "image/gif"
+        ? ".gif"
+        : ".png";
     const blob = await res.blob();
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `ImagineAI-${Date.now()}.jpg`);
+    link.setAttribute("download", `ImagineAI-${Date.now()}${extension}`);
     document.body.appendChild(link);
     link.click();
     link.parentNode?.removeChild(link);

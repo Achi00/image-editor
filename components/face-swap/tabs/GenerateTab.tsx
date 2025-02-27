@@ -48,9 +48,6 @@ export default function GenerateTab({
   // store generated image url
   const { setSelectedBackgroundSourceUrl } = useImageActions();
   const [imageUrl, setImageUrl] = useState("");
-  // const [imageUrl, setImageUrl] = useState(
-  //   "https://res.cloudinary.com/dle6xv667/image/upload/v1737910618/Untitled-1_mkmjvo.jpg"
-  // );
 
   const getUser = useUserStore((state) => state.getUser);
   const user = useUserStore((state) => state.users[userId]) as UserType;
@@ -63,20 +60,9 @@ export default function GenerateTab({
     setSdCount(user?.stableDiffusion);
   }, [getUser, user, userId]);
 
-  // useEffect(() => {
-  //   if (sdCount === 0) {
-  //     setSdLimit(true);
-  //   }
-  // }, [sdCount, sdLimit]);
-
   if (!user) return <div>Loading...</div>;
 
   // disable component if user hit stable diffusion usage limit
-  // TODO: fix when count hits 0 it will not show generated image and will straight show this component
-  const handleTestSdCount = () => {
-    setSdCount((prev) => prev - 1);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => {
       const newInput = { ...prev, [e.target.name]: e.target.value };
@@ -101,7 +87,6 @@ export default function GenerateTab({
           userId: user.id,
         });
 
-        console.log(resultImg);
         // update stable diffusion generation limit
         if (typeof updatedData.remainingGenerations === "number") {
           setSdCount(updatedData.remainingGenerations);
@@ -149,7 +134,6 @@ export default function GenerateTab({
           </AlertDescription>
         </Alert>
       )}
-      <Button onClick={handleTestSdCount}>Test</Button>
       {sdLimit ? (
         <StableDiffusionLimit onSwitchTab={() => setActiveTab("select")} />
       ) : (

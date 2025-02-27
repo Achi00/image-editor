@@ -12,13 +12,8 @@ const SdImageSelected = () => {
   // Get the current URL value
   const backgroundUrl = useSelectedBackgroundSourceUrl();
 
-  // Example usage:
-  const handleImageSelect = (url: string) => {
-    setSelectedBackgroundSourceUrl(url);
-  };
-
   const handleCancel = () => {
-    console.log(backgroundUrl);
+    setSelectedBackgroundSourceUrl(null);
   };
 
   const openModal = () => {
@@ -34,22 +29,24 @@ const SdImageSelected = () => {
             Stable Diffusion generated image selected
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleCancel}
-          className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
-        >
-          Remove
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={openModal}
-          className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
-        >
-          Show Image
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCancel}
+            className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
+          >
+            Remove
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={openModal}
+            className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
+          >
+            Show Image
+          </Button>
+        </div>
       </div>
       <div className="flex items-start space-x-2 text-sm text-blue-600">
         <p>

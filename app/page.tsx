@@ -4,6 +4,8 @@ import LinkCards from "../components/landing/LinkCards";
 import { LinkCardProps } from "@/types";
 import Hero from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
+import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
 
 const Links: LinkCardProps[] = [
   {
@@ -33,8 +35,9 @@ const page = async ({
 }) => {
   const status = await searchParams;
   return (
-    <main className="flex-1">
+    <main>
       <Hero authStatus={status.authStatus || ""} />
+
       <div className="flex w-full items-center justify-center gap-10">
         {Links.map((link: LinkCardProps) => (
           <LinkCards
@@ -47,6 +50,13 @@ const page = async ({
             status={link.status}
           />
         ))}
+      </div>
+      <div className="container mx-auto py-16 flex flex-col gap-8">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mb-12">
+          Services
+        </h1>
+        <FaceSwapIllustration />
+        <RemoveBGIllustration />
       </div>
       <HowItWorks />
     </main>

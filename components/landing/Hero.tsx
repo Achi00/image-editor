@@ -40,12 +40,6 @@ const Hero = ({ authStatus }: { authStatus: string }) => {
               Unleash the power of AI to swap faces, remove backgrounds, and
               enhance image quality in seconds.
             </p>
-            <div className="mt-8 flex gap-4">
-              <Button size="lg">Get Started</Button>
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
-            </div>
           </div>
           <div className="relative">
             <Image

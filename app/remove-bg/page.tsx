@@ -1,6 +1,5 @@
 import ImageUploader from "@/components/remove-bg/ImageUploader";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Images } from "lucide-react";
 import React from "react";
 
 const page = () => {

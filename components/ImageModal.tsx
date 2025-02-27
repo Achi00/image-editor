@@ -32,7 +32,7 @@ const ImageModal = () => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [modalUrl, setImageUrl]);
+  }, [modalUrl]);
 
   // close modal and return to page where from image was open
   const handleClose = () => {
