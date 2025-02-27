@@ -26,7 +26,7 @@ const Hero = ({ authStatus }: { authStatus: string }) => {
             </Alert>
           </div>
         )}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8">
+        <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8">
           <div className="flex flex-col justify-center">
             <div className="relative">
               <div className="absolute -bottom-4 -left-4 h-72 w-72 animate-blob rounded-full bg-purple-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
@@ -47,7 +47,7 @@ const Hero = ({ authStatus }: { authStatus: string }) => {
               alt="AI Image Processing"
               width={600}
               height={400}
-              className="rounded-lg shadow-xl"
+              className="rounded-lg shadow-xl border-2 border-black"
             />
           </div>
         </div>

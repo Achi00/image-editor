@@ -1,10 +1,6 @@
 import { ArrowRight, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { Card, CardContent } from "../ui/card";
-import ronaldo from "@/public/homePageImages/face-swap/ronaldo.jpg";
-import superman from "@/public/homePageImages/face-swap/superman.jpg";
-import result from "@/public/homePageImages/face-swap/result.jpg";
 
 const FaceSwapIllustration = () => {
   return (
@@ -16,19 +12,21 @@ const FaceSwapIllustration = () => {
           from one image to another with perfect shadows, lightning and mimics.
         </p>
       </div>
-      <div className="w-full max-w-4xl mx-auto p-4">
-        <Card className="overflow-hidden">
-          <CardContent className="p-6">
+      <div className="sm:w-full max-w-4xl mx-auto p-4">
+        <div className="overflow-hidden">
+          <div className="p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               {/* First section - Input images */}
               <div className="flex flex-col md:flex-row items-center gap-4">
                 {/* First input image */}
                 <div className="relative">
-                  <div className="bg-muted rounded-lg overflow-hidden w-48 h-48 border border-border">
+                  <div className="bg-muted rounded-lg overflow-hidden border border-border">
                     <Image
-                      src={ronaldo}
+                      width={350}
+                      height={350}
+                      src="https://res.cloudinary.com/dle6xv667/image/upload/v1737911024/Untitled-2_z8tqxz.jpg"
                       alt="First input image"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-md border-2 border-black"
                     />
                   </div>
                   <span className="absolute -top-2 -left-2 bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
@@ -43,11 +41,13 @@ const FaceSwapIllustration = () => {
 
                 {/* Second input image */}
                 <div className="relative">
-                  <div className="bg-muted rounded-lg overflow-hidden w-48 h-48 border border-border">
+                  <div className="bg-muted rounded-lg overflow-hidden border border-border">
                     <Image
-                      src={superman}
+                      width={350}
+                      height={350}
+                      src="https://res.cloudinary.com/dle6xv667/image/upload/v1737909558/superman_mv6hmz.jpg"
                       alt="Second input image"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-md border-2 border-black"
                     />
                   </div>
                   <span className="absolute -top-2 -left-2 bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
@@ -65,9 +65,11 @@ const FaceSwapIllustration = () => {
               <div className="relative">
                 <div className="bg-muted rounded-lg overflow-hidden w-64 h-64 border border-border shadow-lg">
                   <Image
-                    src={result}
+                    width={350}
+                    height={350}
+                    src="https://res.cloudinary.com/dle6xv667/image/upload/v1738526954/a9rvw0yvlqqbzgt8evy1.jpg"
                     alt="Result image"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-md border-2 border-black"
                   />
                 </div>
                 <span className="absolute -top-2 -left-2 bg-secondary text-secondary-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
@@ -84,8 +86,8 @@ const FaceSwapIllustration = () => {
                 The face from Image 1 is placed on Image 2
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

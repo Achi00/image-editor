@@ -6,6 +6,7 @@ import Hero from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
 import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
+import SdGeneration from "@/components/landing/SdGeneration";
 
 const Links: LinkCardProps[] = [
   {
@@ -51,12 +52,15 @@ const page = async ({
           />
         ))}
       </div>
-      <div className="container mx-auto py-16 flex flex-col gap-8">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mb-12">
+      <div className="container border-t-2 mt-16 mx-auto py-6 flex flex-col gap-8">
+        <h1 className="text-4xl font-semibold tracking-tight text-center">
           Services
         </h1>
         <FaceSwapIllustration />
+        <div className="border-t"></div>
         <RemoveBGIllustration />
+        <div className="border-t"></div>
+        <SdGeneration />
       </div>
       <HowItWorks />
     </main>
