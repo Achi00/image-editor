@@ -7,6 +7,7 @@ import { ChevronDown, ImageIcon, LogOut, Menu, User, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { Session } from "next-auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,76 +56,10 @@ export default function Navbar() {
               </Link>
             ))}
             <ThemeToggle />
-            {session?.user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-12 justify-start space-x-2 px-4"
-                  >
-                    <Image
-                      quality={60}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                      src={session?.user?.image || "/placeholder.svg"}
-                      alt="User avatar"
-                    />
-                    <span className="flex-1 text-left text-sm font-medium">
-                      {session?.user?.name}
-                    </span>
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {session?.user?.name}
-                      </p>
-                      {session?.user?.email && (
-                        <p className="text-xs leading-none text-muted-foreground">
-                          {session?.user?.email}
-                        </p>
-                      )}
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/gallery"
-                      prefetch={true}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <ImageIcon className="mr-2 h-4 w-4" />
-                      <span>Open Gallery</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/profile"
-                      className="flex items-center cursor-pointer"
-                    >
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="text-red-600 focus:text-red-800  cursor-pointer"
-                    onSelect={() => signOut()}
-                  >
-                    <LogOut className="mr-2 h-6 w-6" />
-                    <span>Sign out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <GoogleButton />
-            )}
+            <NavbarUserMenu session={session} />
           </div>
 
-          <div className="-mr-2 flex items-center sm:hidden">
+          <div className="-mr-2 flex gap-2 items-center sm:hidden">
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -143,7 +78,7 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="sm:hidden">
+        <div className="sm:hidden p-5">
           <div className="pt-2 pb-3 space-y-1">
             {navItems.map((item) => (
               <Link
@@ -156,8 +91,83 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+          <NavbarUserMenu session={session} />
         </div>
       )}
     </nav>
   );
 }
+
+const NavbarUserMenu = ({ session }: { session: Session | null }) => {
+  return (
+    <>
+      {session?.user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="relative h-12 justify-start space-x-2 px-4"
+            >
+              <Image
+                quality={60}
+                className="rounded-full"
+                width={32}
+                height={32}
+                src={session?.user?.image || "/placeholder.svg"}
+                alt="User avatar"
+              />
+              <span className="flex-1 text-left text-sm font-medium">
+                {session?.user?.name}
+              </span>
+              <ChevronDown className="h-4 w-4 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {session?.user?.name}
+                </p>
+                {session?.user?.email && (
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {session?.user?.email}
+                  </p>
+                )}
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link
+                href="/gallery"
+                prefetch={true}
+                className="flex items-center cursor-pointer"
+              >
+                <ImageIcon className="mr-2 h-4 w-4" />
+                <span>Open Gallery</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link
+                href="/profile"
+                className="flex items-center cursor-pointer"
+              >
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-red-600 focus:text-red-800  cursor-pointer"
+              onSelect={() => signOut()}
+            >
+              <LogOut className="mr-2 h-6 w-6" />
+              <span>Sign out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <GoogleButton />
+      )}
+    </>
+  );
+};

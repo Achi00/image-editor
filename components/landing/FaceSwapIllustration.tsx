@@ -9,10 +9,10 @@ const FaceSwapIllustration = () => {
         <h2 className="text-3xl font-semibold tracking-tight">Face Swapping</h2>
         <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">
           Combine 2 images into one, pick images by your choice and move face
-          from one image to another with perfect shadows, lightning and mimics.
+          from one image to another with perfect shadows, lighting and mimics.
         </p>
       </div>
-      <div className="sm:w-full max-w-4xl mx-auto p-4">
+      <div className="sm:w-full bg-white rounded-md max-w-4xl mx-auto p-4">
         <div className="overflow-hidden">
           <div className="p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -36,7 +36,7 @@ const FaceSwapIllustration = () => {
 
                 {/* Plus sign */}
                 <div className="p-2">
-                  <PlusCircle className="w-8 h-8 text-primary" />
+                  <PlusCircle className="w-8 h-8 text-primary" color="black" />
                 </div>
 
                 {/* Second input image */}
@@ -58,12 +58,12 @@ const FaceSwapIllustration = () => {
 
               {/* Arrow pointing to result */}
               <div className="p-4 rotate-90 md:rotate-0">
-                <ArrowRight className="w-8 h-8 text-primary" />
+                <ArrowRight className="w-8 h-8 text-primary" color="black" />
               </div>
 
               {/* Result image */}
               <div className="relative">
-                <div className="bg-muted rounded-lg overflow-hidden w-64 h-64 border border-border shadow-lg">
+                <div className="bg-muted rounded-lg overflow-hidden sm:w-[250px] sm:h-[250px] md:w-64 md:h-64 border border-border shadow-lg">
                   <Image
                     width={350}
                     height={350}

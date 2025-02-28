@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import { Button } from "../ui/button";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import CoverImg from "@/public/cover.png";
@@ -30,7 +29,7 @@ const Hero = ({ authStatus }: { authStatus: string }) => {
           <div className="flex flex-col justify-center">
             <div className="relative">
               <div className="absolute -bottom-4 -left-4 h-72 w-72 animate-blob rounded-full bg-purple-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
-              <div className="absolute -top-4 -right-4 h-72 w-72 animate-blob animation-delay-2000 rounded-full bg-yellow-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
+              <div className="absolute -top-4 -right-4 h-72 w-72 animate-blob animation-delay-2000 rounded-full bg-red-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
               <div className="absolute -bottom-8 left-20 h-72 w-72 animate-blob animation-delay-4000 rounded-full bg-pink-300 opacity-70 mix-blend-multiply blur-xl filter"></div>
             </div>
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">

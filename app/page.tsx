@@ -15,7 +15,7 @@ const Links: LinkCardProps[] = [
     href: "/face-swap",
     heading: "Swap Face",
     description:
-      "Swap faces from one face to another with perfect shadows, mimics and skin tone",
+      "Swap faces from one image to another with perfect shadows, mimics and skin tone",
     status: "server",
   },
   {
@@ -39,7 +39,7 @@ const page = async ({
     <main>
       <Hero authStatus={status.authStatus || ""} />
 
-      <div className="flex w-full items-center justify-center gap-10">
+      <div className="flex w-full flex-col md:flex-row items-center justify-center gap-10">
         {Links.map((link: LinkCardProps) => (
           <LinkCards
             key={link.id}
@@ -52,6 +52,8 @@ const page = async ({
           />
         ))}
       </div>
+      <div className="border-t mt-10"></div>
+      <HowItWorks />
       <div className="container border-t-2 mt-16 mx-auto py-6 flex flex-col gap-8">
         <h1 className="text-4xl font-semibold tracking-tight text-center">
           Services
@@ -62,7 +64,6 @@ const page = async ({
         <div className="border-t"></div>
         <SdGenerationIllustration />
       </div>
-      <HowItWorks />
     </main>
   );
 };

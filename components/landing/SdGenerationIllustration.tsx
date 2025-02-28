@@ -13,7 +13,8 @@ const SdGenerationIllustration = () => {
           </h2>
           <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">
             You are not limited by images, if you want more wide range of
-            options you can generate new image with stable diffusionby entering
+            options you can generate new image with{" "}
+            <span className="font-semibold">Stable Diffusion</span> by entering
             prompt, then uploading or choosing face image
           </p>
         </div>
@@ -27,12 +28,14 @@ const SdGenerationIllustration = () => {
                   </div>
                 </div>
                 <div className="border-2 border-black rounded-md">
-                  <p className="py-2 pl-4 pr-24 font-bold">Superman</p>
+                  <p className="py-2 text-black pl-4 pr-24 font-bold">
+                    Superman
+                  </p>
                 </div>
                 {/* <Input readOnly={true} value="Superman" /> */}
               </div>
               <div className="p-2">
-                <PlusCircle className="w-8 h-8 text-primary" />
+                <PlusCircle className="w-8 h-8 text-primary" color="black" />
               </div>
               {/* face image */}
               <div className="relative">
@@ -52,7 +55,7 @@ const SdGenerationIllustration = () => {
                 </div>
               </div>
               <div className="p-4 rotate-90 md:rotate-0">
-                <ArrowRight className="w-8 h-8 text-primary" />
+                <ArrowRight className="w-8 h-8 text-primary" color="black" />
               </div>
 
               {/* Result image */}

@@ -19,7 +19,7 @@ const LinkCards = ({
   description,
 }: LinkCardProps) => {
   return (
-    <Link href={href} className="block xl:w-1/4 w-1/3">
+    <Link href={href} className="block px-5">
       <Card className="w-full h-full transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-xl">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 text-primary">

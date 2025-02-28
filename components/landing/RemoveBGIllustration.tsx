@@ -22,7 +22,7 @@ const RemoveBGIllustration = () => {
                 />
               </div>
               <div className="p-4 rotate-90 md:rotate-0">
-                <ArrowRight className="w-8 h-8 text-primary" />
+                <ArrowRight className="w-8 h-8 text-primary" color="black" />
               </div>
 
               {/* Result image */}
