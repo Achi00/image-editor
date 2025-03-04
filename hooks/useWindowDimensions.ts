@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 
 export const useWindowDimensions = () => {
   const [windowDimensions, setWindowDimensions] = useState({
-    // as default should be zero otherwise it will show error because it will be rendered on server where window. doesn't exist
-    width: 0,
-    height: 0,
+    width: typeof window !== "undefined" ? window.innerWidth : 1024,
+    height: typeof window !== "undefined" ? window.innerHeight : 768,
   });
 
   useEffect(() => {

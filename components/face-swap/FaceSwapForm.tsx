@@ -178,7 +178,7 @@ const FaceSwapForm = () => {
               </>
             }
           />
-          {/* toggle gallery is open value */}
+          {/* toggle gallery */}
           <GalleryToggle />
           <ResponsiveCard
             contentClassName="w-80"

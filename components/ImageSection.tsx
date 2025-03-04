@@ -1,15 +1,24 @@
 "use client";
 import useLocalStorageStore from "@/store/useLocalStorageStore";
-import { LocalStorageProps } from "@/types";
+import { LinkCardProps, LocalStorageProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
-import { Calendar, Trash2 } from "lucide-react";
+import { Calendar, ImageOff, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { DeleteImage } from "@/utils/DeleteImageFromDB";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import LinkCards from "./landing/LinkCards";
+import { Links } from "@/app/page";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 // display image components
 export const ImageSection = ({
@@ -29,6 +38,10 @@ export const ImageSection = ({
   const { removeImage } = useLocalStorageStore();
 
   const [allImages, setAllImages] = useState<LocalStorageProps[]>(images);
+
+  useEffect(() => {
+    setAllImages(images);
+  }, [images]);
 
   const handleDelete = async (imgUrl: string) => {
     // if user is authenticated delete from database
@@ -50,14 +63,49 @@ export const ImageSection = ({
     }
   };
 
+  const params = new URLSearchParams(searchParams.toString());
+
   const createModalLink = (imageUrl: string) => {
-    const params = new URLSearchParams(searchParams.toString());
     params.set("modal", imageUrl);
     return `${pathname}?${params.toString()}`;
   };
 
   return (
     <div className="mb-4">
+      {allImages.length == 0 && (
+        <Card className="w-full max-w-3xl mx-auto shadow-md">
+          <CardHeader className="text-center pb-2">
+            <div className="flex justify-center mb-4">
+              <div className="p-4 bg-muted rounded-full">
+                <ImageOff className="h-12 w-12 text-muted-foreground" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              No images generated for {params.toString().replace("filter=", "")}{" "}
+              section
+            </CardTitle>
+            <CardDescription className="text-base mt-2">
+              Get started by generating your first image using one of the
+              options below
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
+              {Links.map((link: LinkCardProps) => (
+                <LinkCards
+                  key={link.id}
+                  id={link.id}
+                  Icon={link.Icon}
+                  href={link.href}
+                  heading={link.heading}
+                  description={link.description}
+                  status={link.status}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
       <Toaster />
       <h5 className="font-medium mb-2">{title}</h5>
       <div className={className}>

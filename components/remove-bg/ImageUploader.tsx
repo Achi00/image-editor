@@ -145,6 +145,8 @@ const ImageUploader = () => {
     const { pixel_values } = await processorRef.current(image);
 
     // 4c. Predict alpha matte
+
+    // @ts-expect-error The model's output type is not recognized by TypeScript.
     const { output } = await modelRef.current({ input: pixel_values });
 
     // 4d. Resize mask back to original size

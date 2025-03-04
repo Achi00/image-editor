@@ -8,7 +8,7 @@ import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
 import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
 import SdGenerationIllustration from "@/components/landing/SdGenerationIllustration";
 
-const Links: LinkCardProps[] = [
+export const Links: LinkCardProps[] = [
   {
     id: 1,
     Icon: ArrowLeftRight,

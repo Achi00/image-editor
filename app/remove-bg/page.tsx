@@ -5,9 +5,6 @@ import React from "react";
 const page = () => {
   return (
     <div className="flex py-10 flex-col w-full items-center justify-center min-h-screen">
-      <h1 className="scroll-m-20 text-3xl border-b-2 border-black font-extrabold tracking-tight lg:text-4xl">
-        Remove Background By One Click
-      </h1>
       <div className="mt-8 mb-10 w-full">
         <CardHeader>
           <CardTitle>How It Works</CardTitle>

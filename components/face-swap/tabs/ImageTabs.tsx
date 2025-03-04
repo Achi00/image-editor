@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GenerateTab from "./GenerateTab";
 import {
   useImageActions,
+  useSelectedBackgroundSourceUrl,
   useSelectedSourceId,
 } from "@/store/useImageSelectionStore";
 import SelectImage from "../SelectImage";
@@ -18,15 +19,26 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
 import GoogleButton from "@/components/GoogleButton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 // for source image
 export default function ImageTabs() {
   const { data: session } = useSession();
-  const { setSelectedBackgroundSourceId } = useImageActions();
+  const { setSelectedBackgroundSourceId, setSelectedBackgroundSourceUrl } =
+    useImageActions();
   const selectedSourceId = useSelectedSourceId();
   const [activeTab, setActiveTab] = useState("select");
+
+  // background image url
+  const selectedBackgroundUrl = useSelectedBackgroundSourceUrl();
+  console.log("selectedBackgroundUrl: " + selectedBackgroundUrl);
+  // remove selected stable diffusion image
+  const handleRemove = () => {
+    setSelectedBackgroundSourceUrl(null);
+  };
 
   return (
     <Tabs
@@ -75,13 +87,33 @@ export default function ImageTabs() {
         )}
       </TabsContent>
       <TabsContent value="select">
-        <SelectImage
-          images={imagesArr}
-          selectedId={selectedSourceId}
-          onSelect={(id) => {
-            setSelectedBackgroundSourceId(id);
-          }}
-        />
+        {selectedBackgroundUrl?.startsWith("https://replicate.delivery") ? (
+          <Alert variant="destructive" className="mb-4 py-8 my-8">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Stable Diffusion image already selected</AlertTitle>
+            <AlertDescription>
+              You need to remove the currently selected Stable Diffusion image
+              before selecting an image from this section.
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-2 w-full sm:w-auto"
+                onClick={handleRemove}
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                Remove Stable Diffusion Image
+              </Button>
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <SelectImage
+            images={imagesArr}
+            selectedId={selectedSourceId}
+            onSelect={(id) => {
+              setSelectedBackgroundSourceId(id);
+            }}
+          />
+        )}
         {/* <SelectImage images={galleryImages} selectedId={selectedSourceId} /> */}
       </TabsContent>
     </Tabs>

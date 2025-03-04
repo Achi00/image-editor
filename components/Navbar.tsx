@@ -3,7 +3,7 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, ImageIcon, LogOut, Menu, User, X } from "lucide-react";
+import { ChevronDown, ImageIcon, LogOut, Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "./ui/button";
 import Image from "next/image";
@@ -146,7 +146,7 @@ const NavbarUserMenu = ({ session }: { session: Session | null }) => {
                 <span>Open Gallery</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
+            {/* <DropdownMenuItem asChild>
               <Link
                 href="/profile"
                 className="flex items-center cursor-pointer"
@@ -154,7 +154,7 @@ const NavbarUserMenu = ({ session }: { session: Session | null }) => {
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </Link>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-red-600 focus:text-red-800  cursor-pointer"

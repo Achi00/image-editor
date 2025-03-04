@@ -3,8 +3,14 @@ import React from "react";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import CoverImg from "@/public/cover.png";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const Hero = ({ authStatus }: { authStatus: string }) => {
+const Hero = async ({ authStatus }: { authStatus: string }) => {
+  const session = await auth();
+  if (authStatus === "notAuthenticated" && session?.user) {
+    redirect("/");
+  }
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-indigo-100 to-white dark:from-indigo-950 dark:to-background">
       <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
