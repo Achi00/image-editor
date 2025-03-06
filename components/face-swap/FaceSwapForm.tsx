@@ -26,7 +26,16 @@ import { useErrorStore } from "@/store/useErrorStore";
 import { useSaveImage } from "@/hooks/useSaveImage";
 import { useSubmitText } from "@/hooks/useSubmitText";
 import SdImageSelected from "./SdImageSelected";
+import { useSearchParams } from "next/navigation";
+// import { useRouter } from "next/navigation";
 const FaceSwapForm = () => {
+  // set face swap image as url in params
+  const searchParams = useSearchParams();
+  // const pathname = usePathname();
+  // const router = useRouter();
+  // Remove the image state and use URL instead
+  const imageFromParams = searchParams.get("faceSwapImage");
+
   // store image url
   const [image, setImage] = useState<string | null>();
   // performe face swap and upload image into cloudinary
@@ -129,6 +138,8 @@ const FaceSwapForm = () => {
       setImage(resUrl);
 
       saveImageData(resUrl, "face-swap");
+      // set image url as params
+      // router.push(`${pathname}?faceSwapImage=${encodeURIComponent(resUrl)}`);
     } catch (error) {
       console.error(error);
     }
@@ -195,9 +206,11 @@ const FaceSwapForm = () => {
                     What is Target face?
                   </h4>
                   <p className="text-sm">
-                    Target face it type of image where existing face will be
-                    moved to main image which you can select below or generate a
-                    new one with{" "}
+                    Target face it type of image where we get the face from,
+                    after this selection we will moved that face to main image
+                    which you can select below on{" "}
+                    <span className="font-semibold">Select Image</span> section
+                    or generate a new one with{" "}
                     <span className="font-semibold">Stable Diffusion</span>
                   </p>
                 </div>
@@ -244,7 +257,7 @@ const FaceSwapForm = () => {
           )}
         </div>
         <div className="pt-10">
-          {selectedBackgroundUrl && <SdImageSelected />}
+          {selectedBackgroundUrl && <SdImageSelected isPending={isPending} />}
         </div>
         <div className="pt-16">
           <Button
@@ -265,7 +278,6 @@ const FaceSwapForm = () => {
           >
             {isPending ? (
               <>
-                {/* TODO: make changable text */}
                 <Loader2 className="animate-spin" />
                 {loadingText}
               </>
@@ -276,13 +288,13 @@ const FaceSwapForm = () => {
         </div>
       </form>
       {/* final result */}
-      {image && (
+      {(image || imageFromParams) && (
         <div className="flex flex-col gap-5 text-center py-4">
           <h1 className="font-bold text-3xl">Final Result</h1>
           <Image
             quality={80}
             className="rounded-3xl"
-            src={image}
+            src={image || imageFromParams || ""}
             alt="final result"
             width={550}
             height={550}

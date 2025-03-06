@@ -7,12 +7,16 @@ import {
 } from "@/store/useImageSelectionStore";
 import { redirect } from "next/navigation";
 
-const SdImageSelected = () => {
+interface SdImageSelectedProps {
+  isPending: boolean;
+}
+
+const SdImageSelected = ({ isPending }: SdImageSelectedProps) => {
   const { setSelectedBackgroundSourceUrl } = useImageActions();
   // Get the current URL value
   const backgroundUrl = useSelectedBackgroundSourceUrl();
 
-  const handleCancel = () => {
+  const handleRemove = () => {
     setSelectedBackgroundSourceUrl(null);
   };
 
@@ -32,8 +36,9 @@ const SdImageSelected = () => {
         <div className="flex gap-2">
           <Button
             variant="outline"
+            disabled={isPending}
             size="sm"
-            onClick={handleCancel}
+            onClick={handleRemove}
             className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
           >
             Remove
@@ -41,6 +46,7 @@ const SdImageSelected = () => {
           <Button
             variant="outline"
             size="sm"
+            disabled={isPending}
             onClick={openModal}
             className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
           >

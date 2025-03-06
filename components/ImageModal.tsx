@@ -1,19 +1,21 @@
 "use client";
 import Image from "next/image";
-import { useSearchParams, usePathname, redirect } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import DownloadButton from "./DownloadButton";
 import { useImageStore } from "@/store/useImageSelectionStore";
 
 const ImageModal = () => {
-  // const route = useRouter();
+  const router = useRouter();
   // get image url from modal url
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const modalUrl = searchParams.get("modal");
   // keep filter params
   const filterParam = searchParams.get("filter");
+  // check if face swap image is saved in params
+  const faceSwapImage = searchParams.get("faceSwapImage");
 
   // pass image url to download api
   const { setImageUrl } = useImageStore();
@@ -32,16 +34,23 @@ const ImageModal = () => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [modalUrl]);
+  }, [modalUrl, setImageUrl]);
 
   // close modal and return to page where from image was open
   const handleClose = () => {
-    // Preserve the filter parameter when closing the modal if its applayed
+    // Construct the new URL with all necessary parameters
+    const queryParams = new URLSearchParams();
+
     if (filterParam) {
-      redirect(`${pathname}?filter=${filterParam}`);
-    } else {
-      redirect(pathname);
+      queryParams.set("filter", filterParam);
     }
+
+    if (faceSwapImage) {
+      queryParams.set("faceSwapImage", faceSwapImage);
+    }
+
+    const queryString = queryParams.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   if (!modalUrl) return null;

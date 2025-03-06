@@ -22,7 +22,7 @@ export function Footer() {
                 <Link href="/remove-bg">Background Removal</Link>
               </li>
               <li>
-                <Link href="/enhance">Image Enhancement</Link>
+                <Link href="/upscale">Image Upscale</Link>
               </li>
             </ul>
           </div>

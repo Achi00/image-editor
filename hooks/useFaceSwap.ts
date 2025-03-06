@@ -8,7 +8,7 @@ type FaceSwapInput = {
   target_image: File;
   source_image: string;
   operation: string;
-  enhance_result?: boolean;
+  upscale_result?: boolean;
 };
 
 // face swap and upload

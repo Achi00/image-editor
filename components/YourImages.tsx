@@ -48,7 +48,7 @@ const YourImages = () => {
   }, [modalUrl]);
 
   // get images from local storage
-  const { removeBgImages, faceSwapImages, enhanceImages } =
+  const { removeBgImages, faceSwapImages, upscaleImages } =
     useLocalStorageImages();
   // if user is authenticated dont return component
   if (session) return null;
@@ -83,7 +83,7 @@ const YourImages = () => {
             <TabsList className="flex items-center justify-center flex-col xl:flex-row lg:flex-row sm:flex-row mt-10 gap-2 p-1 mb-20">
               <TabsTrigger value="remove-bg">Remove BG</TabsTrigger>
               <TabsTrigger value="face-swap">Face Swap</TabsTrigger>
-              <TabsTrigger value="enhance">Enhance</TabsTrigger>
+              <TabsTrigger value="upscale">Upscale</TabsTrigger>
             </TabsList>
 
             <TabsContent value="remove-bg">
@@ -110,15 +110,15 @@ const YourImages = () => {
               )}
             </TabsContent>
 
-            <TabsContent value="enhance">
-              {enhanceImages.length > 0 ? (
+            <TabsContent value="upscale">
+              {upscaleImages.length > 0 ? (
                 <ImageSection
                   className="grid xl:grid-cols-2 sm:grid-cols-1 gap-2 max-h-96 overflow-auto p-2"
-                  images={enhanceImages}
-                  title="Enhanced"
+                  images={upscaleImages}
+                  title="Upscale"
                 />
               ) : (
-                <NoContent sectionName="Enhance Image" />
+                <NoContent sectionName="Upscale Image" />
               )}
             </TabsContent>
           </Tabs>
@@ -156,7 +156,7 @@ export const NoContent = ({ sectionName }: { sectionName: string }) => (
                   ? "face-swap"
                   : sectionName === "Remove Background"
                   ? "remove-bg"
-                  : "enhance"
+                  : "upscale"
               }
             >
               {sectionName} page

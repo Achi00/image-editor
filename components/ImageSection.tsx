@@ -81,7 +81,7 @@ export const ImageSection = ({
               </div>
             </div>
             <CardTitle className="text-2xl font-bold">
-              No images generated for {params.toString().replace("filter=", "")}{" "}
+              No images created for {params.toString().replace("filter=", "")}{" "}
               section
             </CardTitle>
             <CardDescription className="text-base mt-2">
@@ -125,7 +125,7 @@ export const ImageSection = ({
                   className="object-cover cursor-pointer rounded-md hover:scale-[1.02]  transition-transform"
                 />
               </Link>
-              {/* TODO: delete from database or localstorage */}
+              {/* delete from database or localstorage based on auth */}
               <Button
                 className="cursor-pointer relative z-10 m-2"
                 variant="outline"

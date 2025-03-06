@@ -25,13 +25,13 @@ export const useLocalStorageImages = () => {
     [images]
   );
 
-  const enhanceImages = useMemo(
-    () => images.filter((image) => image.imageFrom === "enhance"),
+  const upscaleImages = useMemo(
+    () => images.filter((image) => image.imageFrom === "upscale"),
     [images]
   );
   return {
     removeBgImages,
     faceSwapImages,
-    enhanceImages,
+    upscaleImages,
   };
 };

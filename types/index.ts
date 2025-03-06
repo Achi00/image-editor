@@ -34,7 +34,7 @@ export interface ReusableHoverCardProps {
   contentClassName?: string;
 }
 export interface LocalStorageProps {
-  imageFrom: "face-swap" | "remove-bg" | "enhance";
+  imageFrom: "face-swap" | "remove-bg" | "upscale";
   imgUrl: string;
   date: Date;
   id?: number;

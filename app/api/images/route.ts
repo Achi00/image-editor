@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const filters = searchParams.get("filter")?.split(",") || [];
 
     // Validate allowed filters
-    const validFilters = ["remove-bg", "face-swap", "enhance"];
+    const validFilters = ["remove-bg", "face-swap", "upscale"];
     const sanitizedFilters = filters.filter((f) => validFilters.includes(f));
 
     const userId = session.user.id;

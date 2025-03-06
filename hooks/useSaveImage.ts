@@ -11,7 +11,7 @@ export function useSaveImage() {
   const saveImageData = useCallback(
     async (
       imageUrl: string,
-      imageFrom: "face-swap" | "remove-bg" | "enhance"
+      imageFrom: "face-swap" | "remove-bg" | "upscale"
     ) => {
       if (!imageUrl) {
         throw new Error("No image to save");

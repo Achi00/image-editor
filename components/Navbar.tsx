@@ -21,7 +21,7 @@ import GoogleButton from "./GoogleButton";
 const navItems = [
   { name: "Remove Background", href: "/remove-bg" },
   { name: "Face Swap", href: "/face-swap" },
-  { name: "Enhance Quality", href: "/enhance-quality" },
+  { name: "Upscale Image", href: "/upscale" },
 ];
 
 export default function Navbar() {
