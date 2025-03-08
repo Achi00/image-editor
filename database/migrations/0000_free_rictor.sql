@@ -44,6 +44,8 @@ CREATE TABLE "user" (
 	"email" text,
 	"emailVerified" timestamp,
 	"image" text,
+	"stableDiffusion" integer DEFAULT 5 NOT NULL,
+	"upscale" integer DEFAULT 15 NOT NULL,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

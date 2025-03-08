@@ -20,6 +20,7 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   stableDiffusion: integer("stableDiffusion").notNull().default(5),
+  upscale: integer("upscale").notNull().default(15),
 });
 
 export const userImages = pgTable("user_images", {

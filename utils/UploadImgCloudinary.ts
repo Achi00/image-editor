@@ -1,5 +1,5 @@
 // upload image to cloudinary
-export const UploadImgCloudinary = async (base64Image: string) => {
+export const UploadImgCloudinary = async (imageData: string) => {
   try {
     const response = await fetch("/api/cloudinary", {
       method: "POST",
@@ -7,9 +7,14 @@ export const UploadImgCloudinary = async (base64Image: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        image: base64Image,
+        image: imageData,
       }),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Upload failed");
+    }
 
     const data = await response.json();
 

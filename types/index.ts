@@ -47,4 +47,5 @@ export interface UserType {
   email: string;
   image: string;
   stableDiffusion: number;
+  upscale: number;
 }

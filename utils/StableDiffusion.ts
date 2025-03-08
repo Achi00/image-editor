@@ -25,6 +25,7 @@ export const stableDiffusion = async ({
     console.log("data:", data);
     if (data.success) {
       try {
+        // save image on cloudinary
         // update user's stable diffusion limit count, reduce by one
         const updateRes = await fetch("/api/sd", {
           method: "PATCH",
@@ -39,7 +40,6 @@ export const stableDiffusion = async ({
         }
 
         updatedData = await updateRes.json();
-        console.log("update data:", updatedData);
       } catch (error) {
         console.error(error);
         return;

@@ -14,6 +14,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const isValidUrl = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -22,6 +31,21 @@ export async function POST(request: Request) {
     if (!image) {
       return Response.json(
         { success: false, error: "Image is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate input format
+    const isBase64 = image.startsWith("data:image/");
+    const isUrl = isValidUrl(image);
+
+    if (!isBase64 && !isUrl) {
+      return Response.json(
+        {
+          success: false,
+          error:
+            "Invalid image format. Must be base64 data URL or public image URL",
+        },
         { status: 400 }
       );
     }

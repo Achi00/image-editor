@@ -1,5 +1,5 @@
 {
-  "id": "3d207f51-a4df-4946-bc44-fff51d9a64b7",
+  "id": "3af242e7-7b8f-4850-8248-7f2c1debf8ab",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -327,6 +327,20 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "stableDiffusion": {
+          "name": "stableDiffusion",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 5
+        },
+        "upscale": {
+          "name": "upscale",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 15
         }
       },
       "indexes": {},
