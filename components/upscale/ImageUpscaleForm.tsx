@@ -43,7 +43,7 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
   const { setImageUrl } = useImageStore();
 
   // users remaining upscale processes
-  const [upscaleCount, setUpscaleCount] = useState<number>(1);
+  const [upscaleCount, setUpscaleCount] = useState<number>(0);
 
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
     null
@@ -72,6 +72,8 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
         setResultImg(data.upscaledImageUrl);
         // update zustand store image for download
         setImageUrl(data.upscaledImageUrl);
+        // update upscale credits count
+        setUpscaleCount(data.remainingUpscale);
         setError(null); // Clear any previous errors
       } else {
         setError(data?.error || "Failed to upscale image");

@@ -74,10 +74,11 @@ export const upscaleImage = async ({
 
       updatedData = await updateRes.json();
       // update database data if user authenticated save image in database update upscale generation count for user
-      console.log("updatedData: " + updatedData);
+      console.log("updatedData: " + JSON.stringify(updatedData));
       return {
         success: true,
         upscaledImageUrl: cloudinaryImgUrl,
+        remainingUpscale: updatedData.remainingUpscale,
       };
     }
   } catch (error) {
