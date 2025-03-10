@@ -2,9 +2,9 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-const RemoveBGIllustration = () => {
+const UpscaleIllustration = () => {
   return (
-    <div className="w-full p-6 bg-gray-100 rounded-2xl border-2">
+    <div className="p-6 bg-gray-100 rounded-2xl border-2">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
         <div>
           <div className="bg-white rounded-lg border p-6 shadow-sm">
@@ -16,7 +16,7 @@ const RemoveBGIllustration = () => {
                 <Image
                   width={300}
                   height={300}
-                  src="https://res.cloudinary.com/dle6xv667/image/upload/v1737909558/superman_mv6hmz.jpg"
+                  src="https://res.cloudinary.com/dle6xv667/image/upload/v1741605026/test_u56x1i.png"
                   alt="Original image"
                   className="rounded-md border-2 border-black"
                 />
@@ -35,25 +35,24 @@ const RemoveBGIllustration = () => {
                 <Image
                   width={300}
                   height={300}
-                  src="https://res.cloudinary.com/dle6xv667/image/upload/v1738314220/u8qoji6j5go2syt80oc9.png"
+                  src="https://res.cloudinary.com/dle6xv667/image/upload/v1741605042/ImagineAI-1741470452612_jowuan.png"
                   alt="Background removed"
                 />
               </div>
             </div>
 
             <div className="text-center text-sm text-gray-500 mt-4">
-              The background from the original image is removed
+              Increased image resolution
             </div>
           </div>
         </div>
         <div className="md:w-1/2">
           <h2 className="text-3xl font-semibold tracking-tight">
-            Background Removal
+            Image Upscaling
           </h2>
           <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">
-            Upload an image and remove its background instantly. Get a clean,
-            transparent background perfect for product photos, portraits, and
-            design projects.
+            Upload an image with low resolution and let our AI enhance it to a
+            higher resolution for you.
           </p>
         </div>
       </div>
@@ -61,4 +60,4 @@ const RemoveBGIllustration = () => {
   );
 };
 
-export default RemoveBGIllustration;
+export default UpscaleIllustration;

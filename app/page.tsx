@@ -1,4 +1,4 @@
-import { ArrowLeftRight, Eraser } from "lucide-react";
+import { ArrowLeftRight, Eraser, ImageUpscale } from "lucide-react";
 import React from "react";
 import LinkCards from "../components/landing/LinkCards";
 import { LinkCardProps } from "@/types";
@@ -7,6 +7,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
 import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
 import SdGenerationIllustration from "@/components/landing/SdGenerationIllustration";
+import UpscaleIllustration from "@/components/landing/UpscaleIllustration";
 
 export const Links: LinkCardProps[] = [
   {
@@ -26,6 +27,15 @@ export const Links: LinkCardProps[] = [
     description:
       "Make any image transparent by one click, runs on your local browser",
     status: "local",
+  },
+  {
+    id: 3,
+    Icon: ImageUpscale,
+    href: "/upscale",
+    heading: "Upscale Images",
+    description:
+      "Upscale your images from low resolution to high, with improved quality, contrast and coloring",
+    status: "server",
   },
 ];
 
@@ -63,6 +73,8 @@ const page = async ({
         <RemoveBGIllustration />
         <div className="border-t"></div>
         <SdGenerationIllustration />
+        <div className="border-t"></div>
+        <UpscaleIllustration />
       </div>
     </main>
   );

@@ -8,9 +8,9 @@ import {
   ImageIcon,
   Trash2,
   CheckCircle2,
-  CircleX,
   ZapIcon,
   Loader2,
+  Lock,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import DownloadButton from "../DownloadButton";
@@ -27,11 +27,11 @@ import {
 import { ImageComparisonSlide } from "./ImageComparisonSlide";
 import Image from "next/image";
 import { Session } from "next-auth";
-import { GetUserById } from "@/utils/GetUserById";
 import { useUserStore } from "@/store/useUserStore";
 import { UserType } from "@/types";
 import ReusableAlert from "../ReusableAlert";
 import { useImageStore } from "@/store/useImageSelectionStore";
+import GoogleButton from "../GoogleButton";
 
 const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
   // get user data by id
@@ -137,7 +137,35 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
     upscaleMutation.mutate({ image: exampleImage, userId: userId });
   };
   if (!user) {
-    return "you are not authenticated";
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <div className="flex justify-center">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <div className="mx-auto bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <Lock className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">
+                Authentication Required
+              </CardTitle>
+              <CardDescription>
+                You need to be logged in to use our image upscaling service.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Our AI-powered image upscaling technology is available
+                exclusively to registered users. Please log in or create an
+                account to enhance your images.
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-center gap-4">
+              <GoogleButton />
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
   }
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-lg my-auto">
@@ -152,7 +180,9 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
               disabled={upscaleMutation.isPending || upscaleCount === 0}
               onClick={handleUseExample}
             >
-              Use Example Image
+              {upscaleCount === 0
+                ? "You are out of credits"
+                : "Use Example Image"}
             </Button>
           </div>
         </CardTitle>
@@ -228,6 +258,7 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
                 className="object-contain w-full max-h-64"
               />
               <Button
+                disabled={upscaleMutation.isPending}
                 variant="destructive"
                 size="sm"
                 className="absolute top-3 right-3 opacity-90 hover:opacity-100"
@@ -239,10 +270,6 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
             </div>
           </div>
         )}
-        {/* <ImageComparisonSlide
-          afterImage="https://replicate.delivery/czjl/kT85FdYSyH5NDdYXbPfaibMoEfMUO5DWfxNTX9QZyQpJUrroA/output.png"
-          beforeImage="https://res.cloudinary.com/dle6xv667/image/upload/v1741345757/test_dixeww.png"
-        /> */}
 
         {beforeImage && resultImg && (
           <ImageComparisonSlide
@@ -312,7 +339,7 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
           ) : (
             <div className="flex items-center gap-2">
               <ArrowUpCircle className="h-4 w-4 mr-1" />
-              Upscale Image
+              {upscaleCount === 0 ? "You are out of credits" : "Upscale Image"}
             </div>
           )}
         </Button>

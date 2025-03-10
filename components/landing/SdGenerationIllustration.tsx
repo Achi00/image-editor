@@ -5,7 +5,7 @@ import messi from "@/public/faces/face4.jpg";
 
 const SdGenerationIllustration = () => {
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-6 bg-gray-100 rounded-2xl border-2">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
         <div className="md:w-1/2">
           <h2 className="text-3xl font-semibold tracking-tight">
