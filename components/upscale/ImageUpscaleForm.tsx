@@ -138,7 +138,7 @@ const ImageUpscaleForm = ({ session }: { session: Session | null }) => {
   };
   if (!user) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <div className="flex justify-center">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">

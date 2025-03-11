@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight, Eraser } from "lucide-react";
+import { ArrowLeftRight, Eraser, ImageUpscale } from "lucide-react";
 import Link from "next/link";
 import { useWindowDimensions } from "@/hooks/useWindowDimensions";
 import { useEffect, useState } from "react";
@@ -51,6 +51,20 @@ export const GalleryButtons = ({ filterParam }: { filterParam?: string }) => {
         >
           <ArrowLeftRight />
           {(!mounted || !isMobile) && "Face Swap"}
+        </Link>
+      ),
+    },
+    {
+      label: "Upscale",
+      filter: "upscale",
+      children: (
+        <Link
+          className="flex gap-3 items-center"
+          href="/gallery?filter=upscale"
+          prefetch={true}
+        >
+          <ImageUpscale />
+          {(!mounted || !isMobile) && "Upscale"}
         </Link>
       ),
     },

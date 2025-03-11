@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Images } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import {
@@ -6,6 +6,19 @@ import {
   useSelectedBackgroundSourceUrl,
 } from "@/store/useImageSelectionStore";
 import { redirect } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import {
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+} from "@radix-ui/react-alert-dialog";
 
 interface SdImageSelectedProps {
   isPending: boolean;
@@ -43,15 +56,42 @@ const SdImageSelected = ({ isPending }: SdImageSelectedProps) => {
           >
             Remove
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={isPending}
-            onClick={openModal}
-            className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
-          >
-            Show Image
-          </Button>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={isPending}
+                className="text-blue-600 hover:text-blue-700 border-blue-300 hover:bg-blue-100"
+              >
+                Show Image
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will remove your face swap result, but after
+                  result image will stil be available in you{" "}
+                  <span className="font-bold inline-flex gap-1 items-center">
+                    Gallery <Images className="ml-1" />
+                  </span>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>
+                  <Button variant="outline">Cancel</Button>
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  className="border bg-gray-800 text-white px-2 rounded-md font-semibold"
+                  onClick={openModal}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       <div className="flex items-start space-x-2 text-sm text-blue-600">

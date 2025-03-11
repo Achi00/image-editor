@@ -16,7 +16,7 @@ const UpscaleIllustration = () => {
                 <Image
                   width={300}
                   height={300}
-                  src="https://res.cloudinary.com/dle6xv667/image/upload/v1741605026/test_u56x1i.png"
+                  src="https://res.cloudinary.com/dle6xv667/image/upload/c_scale,w_140/v1741605026/test_u56x1i.png"
                   alt="Original image"
                   className="rounded-md border-2 border-black"
                 />
@@ -51,7 +51,7 @@ const UpscaleIllustration = () => {
             Image Upscaling
           </h2>
           <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">
-            Upload an image with low resolution and let our AI enhance it to a
+            Upload an image with low resolution and let AI enhance it to a
             higher resolution for you.
           </p>
         </div>
