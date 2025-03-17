@@ -6,11 +6,13 @@ import { redirect } from "next/navigation";
 import { ImageSection } from "@/components/ImageSection";
 import { GalleryButtons } from "@/components/gallery/GalleryButtons";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { filter?: string };
-}) => {
+interface PageProps {
+  searchParams: {
+    filter?: string;
+  };
+}
+
+const Page = async ({ searchParams }: PageProps) => {
   const session = await auth();
   if (!session?.user?.id) {
     redirect("/");

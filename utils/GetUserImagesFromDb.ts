@@ -18,7 +18,7 @@ export const GetUserImagesFromDb = async (paramValue: {
   const filter = paramValue.filter;
 
   const response = await fetch(
-    `http://localhost:3000/api/images?filter=${filter}`,
+    `${process.env.NEXTAUTH_URL}/api/images?filter=${filter}`,
     {
       headers: {
         cookie: cookieHeader,
