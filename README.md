@@ -2,7 +2,7 @@
 
 A Next.js application that provides image processing capabilities including image upscaling, face swapping, and background removal.
 
-![App](https://res.cloudinary.com/dle6xv667/image/upload/v1742202210/localhost_3000__hxvxeh.png)
+![App](https://github.com/user-attachments/assets/b79f6a4d-6e4e-48ca-bf3b-0f2f6aaa4300)
 
 ## Features
 
