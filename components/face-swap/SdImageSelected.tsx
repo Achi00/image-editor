@@ -26,7 +26,7 @@ interface SdImageSelectedProps {
 
 const SdImageSelected = ({ isPending }: SdImageSelectedProps) => {
   const { setSelectedBackgroundSourceUrl } = useImageActions();
-  // Get the current URL value
+  // Get the current background image URL value
   const backgroundUrl = useSelectedBackgroundSourceUrl();
 
   const handleRemove = () => {
@@ -34,7 +34,6 @@ const SdImageSelected = ({ isPending }: SdImageSelectedProps) => {
   };
 
   const openModal = () => {
-    console.log();
     redirect(`?modal=${backgroundUrl}`);
   };
   return (

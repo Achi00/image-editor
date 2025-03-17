@@ -27,6 +27,7 @@ import { useSaveImage } from "@/hooks/useSaveImage";
 import { useSubmitText } from "@/hooks/useSubmitText";
 import SdImageSelected from "./SdImageSelected";
 import { useSearchParams } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 // import { useRouter } from "next/navigation";
 const FaceSwapForm = () => {
   // set face swap image as url in params
@@ -147,6 +148,7 @@ const FaceSwapForm = () => {
 
   return (
     <div className="flex items-center justify-center flex-col w-full">
+      <Toaster />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-md mx-auto mt-10 space-y-6"
@@ -223,7 +225,13 @@ const FaceSwapForm = () => {
               id="user_image"
               type="file"
               accept="image/*"
-              {...register("user_image")}
+              {...register("user_image", {
+                onChange: (e) => {
+                  if (e.target.files?.[0]) {
+                    toast.success("Target image uploaded!");
+                  }
+                },
+              })}
               className="mt-2 block w-full cursor-pointer"
             />
           ) : (
