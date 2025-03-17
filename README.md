@@ -18,9 +18,9 @@ A Next.js application that provides image processing capabilities including imag
 
 - **Face Swap**: Face swapping api is created by me, it is written in python and uses [insightface](https://insightface.ai/) inswapper model and [GFPGAN](https://github.com/TencentARC/GFPGAN) face enhancment models to provide highly detaild results
 
-- **Revemo Background**: Background removal api is created only as server component and uses [briaai/RMBG-1.4](https://huggingface.co/briaai/RMBG-1.4) with [Hugging Face](https://huggingface.co/) [Transformers.js](https://huggingface.co/docs/transformers.js/en/index) to make possible to load image in browser environment and be able to run model on user's device `No server side interaction is done while removing image background`
+- **Remove Background**: Background removal api is created only as server component and uses [briaai/RMBG-1.4](https://huggingface.co/briaai/RMBG-1.4) with [Hugging Face](https://huggingface.co/) [Transformers.js](https://huggingface.co/docs/transformers.js/en/index) to make possible to load image in browser environment and be able to run model on user's device `No server side interaction is done while removing image background`
 
-- **Revemo Background**: image upscaler uses same [GFPGAN](https://github.com/TencentARC/GFPGAN) face enhancment models with [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) model but it is used as external API simply because my vps server did not had enought resurces after deploying face swap on it
+- **Remove Background**: image upscaler uses same [GFPGAN](https://github.com/TencentARC/GFPGAN) face enhancment models with [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) model but it is used as external API simply because my vps server did not had enought resurces after deploying face swap on it
 
 ## Tech Stack
 
