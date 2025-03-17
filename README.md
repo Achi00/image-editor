@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Image Processing App
 
-## Getting Started
+A Next.js application that provides image processing capabilities including image upscaling, face swapping, and background removal.
 
-First, run the development server:
+![App](https://res.cloudinary.com/dle6xv667/image/upload/v1742202210/localhost_3000__hxvxeh.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **Image Upscaling**: Enhance low-resolution images to higher quality
+- **Face Swap**: Swap faces between two images
+- **Background Removal**: Remove backgrounds from images automatically
+- **Gallery**: View and manage your processed images
+- **User Authentication**: stores images undes user's id in postgreSQL database
+- **Locas Storage**: uses browser's local storage in case user is not authenticated, images are filtered in same manner as they are in database
+- **Download**: after processing image user is able to download result image
+
+## What API's this app uses
+
+- **Face Swap**: Face swapping api is created by me, it is written in python and uses [insightface](https://insightface.ai/) inswapper model and [GFPGAN](https://github.com/TencentARC/GFPGAN) face enhancment models to provide highly detaild results
+
+- **Revemo Background**: Background removal api is created only as server component and uses [briaai/RMBG-1.4](https://huggingface.co/briaai/RMBG-1.4) with [Hugging Face](https://huggingface.co/) [Transformers.js](https://huggingface.co/docs/transformers.js/en/index) to make possible to load image in browser environment and be able to run model on user's device `No server side interaction is done while removing image background`
+
+- **Revemo Background**: image upscaler uses same [GFPGAN](https://github.com/TencentARC/GFPGAN) face enhancment models with [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) model but it is used as external API simply because my vps server did not had enought resurces after deploying face swap on it
+
+## Tech Stack
+
+- [Next.js 14](https://nextjs.org/) - React Framework
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Drizzle ORM](https://orm.drizzle.team/) - Database ORM
+- [React Server Components](https://nextjs.org/docs/getting-started/react-essentials#server-components) - Server-side Rendering
+
+## Project Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+├── app/                # Next.js app directory
+├── components/         # Reusable UI components
+├── database/          # Database configurations and schemas
+├── hooks/             # Custom React hooks
+├── lib/               # Utility libraries
+├── public/            # Static assets
+├── store/             # State management wuth Zustand
+├── types/             # TypeScript type definitions
+└── utils/             # Helper functions
+```
