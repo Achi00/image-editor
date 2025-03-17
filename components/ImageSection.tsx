@@ -122,6 +122,7 @@ export const ImageSection = ({
                   src={image.imgUrl || "/placeholder.svg"}
                   alt={`${image.imageFrom} image`}
                   fill
+                  sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover cursor-pointer rounded-md hover:scale-[1.02]  transition-transform"
                 />
               </Link>

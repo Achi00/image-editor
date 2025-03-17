@@ -52,13 +52,12 @@ export const getAllUserImages = unstable_cache(
       .select()
       .from(userImages)
       .where(condition)
-      .orderBy(desc(userImages.date))
-      .limit(50);
+      .orderBy(desc(userImages.date));
 
     return query;
   },
 
-  [`user-images`, `filter`],
+  [`user-images`],
 
   {
     tags: [`user-images`],

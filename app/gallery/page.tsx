@@ -6,19 +6,16 @@ import { redirect } from "next/navigation";
 import { ImageSection } from "@/components/ImageSection";
 import { GalleryButtons } from "@/components/gallery/GalleryButtons";
 
-interface PageProps {
-  searchParams: {
-    filter?: string;
-  };
-}
-
-const Page = async ({ searchParams }: PageProps) => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: { filter?: string };
+}) => {
   const session = await auth();
   if (!session?.user?.id) {
     redirect("/");
   }
-  const filters = await searchParams;
-  const filterParam = filters.filter;
+  const filterParam = searchParams?.filter;
 
   const images = (await getAllUserImages(
     session,
