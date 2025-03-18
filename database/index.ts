@@ -5,6 +5,4 @@ const connectionString = process.env.NEXT_PUBLIC_DATABASE_URL as string;
 
 const pool = neon(connectionString);
 
-console.log("pool created");
-
 export const db = drizzle(pool);
