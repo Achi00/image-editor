@@ -1,4 +1,3 @@
-import { ArrowLeftRight, Eraser, ImageUpscale } from "lucide-react";
 import React from "react";
 import LinkCards from "../components/landing/LinkCards";
 import { LinkCardProps } from "@/types";
@@ -8,49 +7,16 @@ import FaceSwapIllustration from "@/components/landing/FaceSwapIllustration";
 import RemoveBGIllustration from "@/components/landing/RemoveBGIllustration";
 import SdGenerationIllustration from "@/components/landing/SdGenerationIllustration";
 import UpscaleIllustration from "@/components/landing/UpscaleIllustration";
+import { links } from "@/lib/Links";
 
-export const Links: LinkCardProps[] = [
-  {
-    id: 1,
-    Icon: ArrowLeftRight,
-    href: "/face-swap",
-    heading: "Swap Face",
-    description:
-      "Swap faces from one image to another with perfect shadows, mimics and skin tone",
-    status: "server",
-  },
-  {
-    id: 2,
-    Icon: Eraser,
-    href: "/remove-bg",
-    heading: "Remove Background",
-    description:
-      "Make any image transparent by one click, runs on your local browser",
-    status: "local",
-  },
-  {
-    id: 3,
-    Icon: ImageUpscale,
-    href: "/upscale",
-    heading: "Upscale Images",
-    description:
-      "Upscale your images from low resolution to high, with improved quality, contrast and coloring",
-    status: "server",
-  },
-];
-
-const page = async ({
-  searchParams,
-}: {
-  searchParams: { authStatus?: string };
-}) => {
+const page = async ({ searchParams }: { searchParams: any }) => {
   const status = await searchParams;
   return (
     <main>
       <Hero authStatus={status.authStatus || ""} />
 
       <div className="flex w-full flex-col md:flex-row items-center justify-center gap-10">
-        {Links.map((link: LinkCardProps) => (
+        {links.map((link: LinkCardProps) => (
           <LinkCards
             key={link.id}
             id={link.id}
@@ -64,7 +30,7 @@ const page = async ({
       </div>
       <div className="border-t mt-10"></div>
       <HowItWorks />
-      <div className="container border-t-2 mt-16 mx-auto py-6 flex flex-col gap-8">
+      <div className="container pb-20 border-t-2 mt-16 mx-auto py-6 flex flex-col gap-8">
         <h1 className="text-4xl font-semibold tracking-tight text-center">
           Services
         </h1>

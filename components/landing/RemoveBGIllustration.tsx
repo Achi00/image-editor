@@ -4,7 +4,7 @@ import React from "react";
 
 const RemoveBGIllustration = () => {
   return (
-    <div className="w-full p-6 bg-gray-100 rounded-2xl border-2">
+    <div className="w-full dark:text-black p-6 bg-gray-100 rounded-2xl border-2">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
         <div>
           <div className="bg-white rounded-lg border p-6 shadow-sm">

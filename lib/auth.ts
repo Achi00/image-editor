@@ -51,6 +51,18 @@ export const { handlers, auth, signIn } = NextAuth({
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 30,
   },
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
+  debug: true,
+  logger: {
+    error: (error, ...metadata) => {
+      console.error(error, ...metadata);
+    },
+    warn: (code) => {
+      console.warn(code);
+    },
+    debug: (code, metadata) => {
+      console.debug(code, metadata);
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 });

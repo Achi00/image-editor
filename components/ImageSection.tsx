@@ -8,10 +8,9 @@ import { Button } from "./ui/button";
 import { Calendar, ImageOff, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { DeleteImage } from "@/utils/DeleteImageFromDB";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import LinkCards from "./landing/LinkCards";
-import { Links } from "@/app/page";
 import {
   Card,
   CardContent,
@@ -19,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { links } from "@/lib/Links";
 
 // display image components
 export const ImageSection = ({
@@ -91,7 +91,7 @@ export const ImageSection = ({
           </CardHeader>
           <CardContent className="pt-4">
             <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
-              {Links.map((link: LinkCardProps) => (
+              {links.map((link: LinkCardProps) => (
                 <LinkCards
                   key={link.id}
                   id={link.id}

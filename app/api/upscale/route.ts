@@ -1,8 +1,3 @@
-// import { db } from "@/database";
-// import { users } from "@/database/schema";
-// import { auth } from "@/lib/auth";
-// import { GetUserById } from "@/utils/GetUserById";
-// import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 import { put, del } from "@vercel/blob";

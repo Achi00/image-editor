@@ -4,7 +4,7 @@ import React from "react";
 
 const FaceSwapIllustration = () => {
   return (
-    <div className="flex p-4 justify-between flex-wrap items-center gap-4 bg-gray-100 rounded-2xl border-2">
+    <div className="flex dark:text-black p-4 justify-between flex-wrap items-center gap-4 bg-gray-100 rounded-2xl border-2">
       <div className="flex flex-col space-y-4 max-w-xl">
         <h2 className="text-3xl font-semibold tracking-tight">Face Swapping</h2>
         <p className="leading-7 text-lg [&:not(:first-child)]:mt-2">

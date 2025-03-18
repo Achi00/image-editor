@@ -4,7 +4,7 @@ import React from "react";
 
 const UpscaleIllustration = () => {
   return (
-    <div className="p-6 bg-gray-100 rounded-2xl border-2">
+    <div className="p-6 dark:text-black bg-gray-100 rounded-2xl border-2">
       <div className="flex flex-col gap-5 xl:flex-row justify-between">
         <div>
           <div className="bg-white rounded-lg border p-6 shadow-sm">

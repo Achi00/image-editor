@@ -4,8 +4,6 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const queryUrl = searchParams.get("query");
 
-  const filename = "imagineAI" + Date.now().toString();
-
   if (!queryUrl) {
     return NextResponse.json(
       { error: "Image URL is required" },
